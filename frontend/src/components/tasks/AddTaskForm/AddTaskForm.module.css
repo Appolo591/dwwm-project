@@ -1,0 +1,78 @@
+.formContainer {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    max-width: 500px;
+    margin: 2rem auto; /* Centré sur la page */
+}
+
+.formContainer h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.inputGroup {
+    margin-bottom: 1.2rem;
+}
+
+.inputGroup label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #34495e;
+    font-size: 0.95rem;
+}
+
+.inputGroup input,
+.inputGroup textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    box-sizing: border-box; /* Important pour le padding */
+}
+
+.inputGroup input:focus,
+.inputGroup textarea:focus {
+    outline: none;
+    border-color: #4a90e2; /* La couleur de ton thème */
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.submitButton {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submitButton:hover {
+    background-color: #357abd;
+}
+
+.submitButton:disabled {
+    background-color: #bdc3c7;
+    cursor: not_allowed;
+}
+
+.errorMessage {
+    color: #e74c3c;
+    background-color: #fadbd8;
+    padding: 0.75rem;
+    border-radius: 4px;
+    border: 1px solid #e74c3c;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+}

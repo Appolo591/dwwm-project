@@ -1,0 +1,8 @@
+RewriteEngine On
+
+RewriteBase /dwwm-project/backend/
+
+RewriteCond %{REQUES_FILENAME} !-f
+RewriteCond %{REQUES_FILENAME} !-d
+
+RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]

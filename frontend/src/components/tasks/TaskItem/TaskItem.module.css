@@ -1,0 +1,42 @@
+.taskItem {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-left: 5px solid #4a90e2; /* Petite barre de couleur typique des Dashboards */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    cursor: pointer;
+    background-color: rgb(239, 223, 197);
+}
+
+.taskItem:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.taskItem h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+}
+
+.taskItem span {
+    color: #5d6d7e;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* Style spécifique pour la date */
+.taskItem span:last-child {
+    font-size: 0.8rem;
+    color: #abb2b9;
+    font-style: italic;
+    margin-top: 0.5rem;
+    border-top: 1px solid #f2f3f4;
+    padding-top: 0.5rem;
+}

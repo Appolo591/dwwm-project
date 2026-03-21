@@ -1,0 +1,16 @@
+{
+    "name": "paull/backend",
+    "autoload": {
+        "psr-4": {
+            "Paull\\Backend\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "paul lom"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
