@@ -1,0 +1,13 @@
+.navLink{
+    text-decoration: none;
+    color: #08060d;
+    font-weight: bold;
+    position: absolute;
+    top : 10px;
+    left: 20px;
+}
+
+.navLink:hover{
+    color: #707070;
+    
+}   

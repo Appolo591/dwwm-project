@@ -8,7 +8,6 @@ class TaskController {
    
     public function oneTask($id) {
 
-    // 2. Sécurité : on vérifie que l'ID est bien présent
     if (empty($id) || !is_numeric($id)) {
         http_response_code(400); // Mauvaise requête
         echo json_encode([
@@ -20,8 +19,6 @@ class TaskController {
 
     $taskManager = new TaskManager();
     $task = $taskManager->getTaskById($id);
-
-    // 3. Vérification : est-ce que la tâche existe en base ?
     if (!$task) {
         http_response_code(404); // Non trouvé
         echo json_encode([
@@ -30,12 +27,44 @@ class TaskController {
         ]);
         return;
     }
-
     http_response_code(200);
     echo json_encode([
         "status" => "success",
         "message" => "Détails de la tâche",
         "data" => $task
-    ]);
-}
+        ]);
+    }
+
+    public function addTask() {
+
+        $title = htmlspecialchars($_POST['title']);
+        $description = htmlspecialchars($_POST['description']);
+        $priority = isset($_POST['priority']) ? $_POST['priority'] : null;
+        $category = isset($_POST['category']) ? $_POST['category'] : null;
+
+        if (empty($title) || empty($description)) {
+            http_response_code(400); // Mauvaise requête
+            echo json_encode([
+                "status" => "error",
+                "message" => "Veuillez remplir tous les champs."
+            ]);
+            return;
+        }
+
+        $taskManager = new TaskManager();
+        $taskId = $taskManager->addTask($title, $description, $priority, $category);
+        http_response_code(201);
+        echo json_encode([
+            "status" => "success",
+            "message" => "Tâche ajoutée avec succès.",
+            "data" => [
+                "id" => $taskId,
+                "title" => $title,
+                "description" => $description,
+                "priority" => $priority,
+                "category" => $category
+            ]
+        ]);
+    }
+
 }

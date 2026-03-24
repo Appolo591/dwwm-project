@@ -6,8 +6,10 @@ const AddTaskForm = ({ onTaskAdded }) => {
   // 1. Déclaration du State pour chaque champ
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [error, setError] = useState('');
+  const [priority, setPriority] = useState(''); // Valeur par défaut (ID 1)
+  const [category, setCategory] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   // 2. Gestionnaire de soumission du formulaire
   const handleSubmit = async (e) => {
@@ -24,7 +26,9 @@ const AddTaskForm = ({ onTaskAdded }) => {
 
     console.log("Données envoyées au PHP :", {
     title: title,
-    description: description
+    description: description,
+    priority: priority,
+    category: category
   });
 
     try {
@@ -34,7 +38,7 @@ const AddTaskForm = ({ onTaskAdded }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title, description }), // On envoie les données en JSON
+        body: JSON.stringify({ title, description, priority, category }), // On envoie les données en JSON
       });
 
       const result = await response.json();
@@ -86,6 +90,36 @@ const AddTaskForm = ({ onTaskAdded }) => {
           required
         />
       </div>
+
+      <div className={styles.inputGroup}>
+        <label htmlFor="priority">Priorité</label>
+        <select
+          id="priority"
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+          required
+        >
+          <option value="low">Faible</option>
+          <option value="medium">Moyenne</option>
+          <option value="high">Haute</option>
+        </select>
+      </div>
+
+      <div className={styles.inputGroup}>
+        <label htmlFor="category">Categorie</label>
+        <select
+          id="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+        >
+          <option value="1">Sport</option>
+          <option value="2">Travail</option>
+          <option value="3">Personnel</option>
+        </select>
+      </div>
+
+      
 
       <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
         {isSubmitting ? 'Envoi en cours...' : 'Ajouter la tâche'}

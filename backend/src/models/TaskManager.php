@@ -42,10 +42,16 @@ class TaskManager {
     }
 
     //  ajouter une tâche
-    public function addTask($title, $description) {
-        $stmt = $this->pdo->prepare("INSERT INTO tasks (title, description) VALUES (?, ?)");
-        $stmt->execute([$title, $description]);
-        return $this->pdo->lastInsertId();
+    public function addTask($title, $description, $priority, $category) {
+        $sql = "INSERT INTO tasks (title, description, priority, category_id ,created_at) 
+                VALUES (?, ? ,?, ?, NOW())";
+        $stmt = $this->pdo->prepare($sql);
+        $success = $stmt->execute([$title, $description, $priority, $category,]);
+        if($success) {
+            $taskId = $this->pdo->lastInsertId();
+            return $taskId;
+        }
+        return false;
     }
 
     //   modifier une tâche

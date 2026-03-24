@@ -59,6 +59,10 @@
             }
             break;
 
+        case 'add':
+            $taskController->addTask();
+            break;
+
         
         default:
             throw new Exception('Page introuvable');

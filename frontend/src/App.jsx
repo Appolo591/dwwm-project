@@ -18,9 +18,11 @@ function App() {
             <Route index element={<Home/>} />
             <Route path="task/:id" element={<TaskDetail/>} />
             <Route path="add" element={<AddTask/>} />
-            <Route path="edit" element={<EditTask/>} />
+            <Route path="edit/:id" element={<EditTask/>} />
+            <Route path="delete/:id" element={<h2>Suppression de la tâche</h2>} />
             <Route path="login" element={<Login/>} />
             <Route path="register" element={<Register/>} />
+            <Route path="logout" element={<h2>Logout</h2>} />
             <Route path="*" element={<h2>Oups ! Page introuvable.</h2>} />
           </Route>  
         </Routes>

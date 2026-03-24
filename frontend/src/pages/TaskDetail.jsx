@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { API_URL } from '../config/api';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import formatDate from '../utils/formatDate';
 import styles from './TaskDetail.module.css';
 
@@ -58,23 +58,13 @@ const TaskDetail =() => {
             <div className={styles.metaGrid}>
                 <div className={styles.infoRow}>
                     <span className={styles.label}>Catégorie</span>
-                    <span className={styles.value}>📁 {task.category_name}</span>
+                    <span className={styles.value}> 🏃{task.category_name}</span>
                 </div>
 
-                <div className={styles.infoRow}>
-                    <span className={styles.label}>Priorité</span>
-                    {/* Utilisation de la couleur venant du backend */}
-                    <span 
-                        className={styles.priorityBadge} 
-                        style={{ backgroundColor: task.priority_color || '#95a5a6' }}
-                    >
-                        {task.priority_name}
-                    </span>
-                </div>
 
                 <div className={styles.infoRow}>
                     <span className={styles.label}>Status</span>
-                    <span className={styles.value}>✅ {task.status_name}</span>
+                    <span className={styles.value}>✅ {task.status}</span>
                 </div>
 
                 <div className={styles.infoRow}>
@@ -83,11 +73,28 @@ const TaskDetail =() => {
                 </div>
             </div>
 
+            <div className={styles.infoRow}>
+                <span className={styles.label}>Priorité</span>
+                {/* Utilisation de la couleur venant du backend */}
+                <span 
+                    className={styles.priorityBadge} 
+                    style={{ backgroundColor: task.priority_color || '#95a5a6' }}
+                >
+                    {task.priority}
+                </span>
+            </div>
+
             {task.created_at && (
                 <p className={styles.dateFooter}>
                     Ajouté le {formatDate(task.created_at)}
                 </p>
             )}
+            <Link to={`/edit/${task.id}`} >
+                <button className={styles.btn}>Modifier</button>
+            </Link>
+            <Link to={`/delete/${task.id}`}>
+            <button className={styles.btn}>Supprimer</button>
+            </Link>
         </div>
     )
 }

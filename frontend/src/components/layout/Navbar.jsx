@@ -1,7 +1,14 @@
-function Navbar() {
+import { Link , useLocation } from 'react-router-dom'
+import styles from './Navbar.module.css'
 
-return (
-    <div>Navbar</div>
+const Navbar =()=> {
+
+  const location = useLocation();
+  
+  return (
+  <nav className={styles.navbar}>
+  {location.pathname !== '/' && <Link to="/" className={styles.navLink}>Accueil</Link>}
+  </nav>
   )
 }
 

@@ -16,9 +16,11 @@ function TaskItem({ task }) {
             <Link to={`/task/${task.id}`} className={styles.taskLink}>
             <div className={styles.taskItem}>
                 <p className={styles.taskCategory} style={{ backgroundColor: bgColor }}>{task.category_name} </p>
+                {task.priority && <span className={styles.taskPriority}> {task.priority}</span>}
                 <h3>{task.title}</h3> 
-                <span>{task.description}</span>
+                <p>{task.description}</p>
                 {task.created_at && <span> Ajouté le {formatDate(task.created_at)}</span>}
+                
             </div>
             </Link>
         
