@@ -1,0 +1,95 @@
+/* .taskDetail{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 50%;
+    margin: 0 auto;
+    justify-content: center;
+    margin-top: 20px;
+} */
+
+/* Le conteneur principal centré */
+.taskDetail {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+/* Le titre principal de la page */
+.taskDetail h1 {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    color: #888;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Le titre de la tâche */
+.taskDetail h3 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin: 0 0 15px 0;
+}
+
+/* Style de la description */
+.descriptionSection {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    border-left: 4px solid #3498db;
+}
+
+/* Conteneur pour les informations "badges" */
+.metaGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Style des paragraphes d'info */
+.infoRow {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0;
+}
+
+.label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #95a5a6;
+}
+
+.value {
+    font-size: 1rem;
+    color: #34495e;
+}
+
+/* Badge spécifique pour la priorité (utilisant ta variable de couleur) */
+.priorityBadge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.dateFooter {
+    margin-top: 30px;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: #bdc3c7;
+    text-align: right;
+}

@@ -22,6 +22,11 @@ const AddTaskForm = ({ onTaskAdded }) => {
       return;
     }
 
+    console.log("Données envoyées au PHP :", {
+    title: title,
+    description: description
+  });
+
     try {
       // 3. Appel API vers ton Backend PHP (pense à ton API_URL config)
       const response = await fetch(`${API_URL}/add-task`, {
@@ -65,13 +70,13 @@ const AddTaskForm = ({ onTaskAdded }) => {
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)} // Mise à jour du State en temps réel
-          placeholder="Ex: Finir le design du footer"
+          placeholder="Votre tâche"
           required
         />
       </div>
 
       <div className={styles.inputGroup}>
-        <label htmlFor="description">Description (détails)</label>
+        <label htmlFor="description">Description</label>
         <textarea
           id="description"
           value={description}

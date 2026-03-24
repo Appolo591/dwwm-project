@@ -10,11 +10,23 @@ class MainController {
 
         // On lui demande les données
         $tasks = $taskManager->getAllTasks();
-        // 3. On répond en JSON
-        echo json_encode([
-            "status" => "success",
-            "count" => count($tasks),
-            "data" => $tasks
-        ]);
+
+        // 2. On vérifie si la tâche existe
+        if (!$tasks) {
+            http_response_code(404);
+            echo json_encode(["status" => "error", "message" => "Liste de Tâches introuvable"]);
+            return;
+        }else{
+            http_response_code(200);
+            header("Content-Type: application/json");
+    
+            echo json_encode([
+                "status" => "success",
+                "count" => count($tasks),
+                "message" => "Liste des tâches",
+                "data" => $tasks
+            ]);
+        }
+        
     }
 }

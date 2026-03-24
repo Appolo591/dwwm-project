@@ -11,20 +11,34 @@ class TaskManager {
         $this->pdo = Database::getConnection();
     }
 
-    /**
-     * Récupère toutes les tâches de la BDD
-     */
-    public function getAllTasks() {
-        $stmt = $this->pdo->query("SELECT * FROM tasks ORDER BY id ASC");
-        return $stmt->fetchAll();
+    public function getAllTasks(): array | false {
+        
+        $sql = "SELECT t.*, c.name AS category_name, u.name AS user_name 
+                FROM tasks t
+                LEFT JOIN users u ON t.user_id = u.id
+                LEFT JOIN categories c ON t.category_id = c.id
+                ORDER BY t.id ASC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $results;
     }
 
-    
-    //   récupérer une seule tâche
-    public function getTaskById($id) {
-        $stmt = $this->pdo->prepare("SELECT * FROM tasks WHERE id = ?");
+    public function getTaskById($id): array | false {
+        
+        $sql = "SELECT t.*, c.name AS category_name, u.name AS user_name 
+                FROM tasks t
+                LEFT JOIN users u ON t.user_id = u.id
+                LEFT JOIN categories c ON t.category_id = c.id
+                WHERE t.id = ?";
+
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id]);
-        return $stmt->fetch();
+        $results = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $results;
     }
 
     //  ajouter une tâche

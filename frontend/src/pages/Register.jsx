@@ -1,9 +1,9 @@
-function RegisterPage() {
+function Register() {
     
 return (
     <div>
-        <h1>RegisterPagePage</h1>
+        <h1>Register</h1>
     </div>  
 )
 }
-export default RegisterPage
+export default Register
