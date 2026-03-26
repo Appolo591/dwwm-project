@@ -2,17 +2,6 @@
     // Temporaire pour débugger
     // var_dump($_GET['page']); die();
 
-    // On récupère "task/1" proprement
-// $page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_URL) ?? 'accueil';
-
-// // On découpe par le slash
-// $urlSegments = explode('/', $page);
-
-// // Position 0 : Le contrôleur (ex: 'task')
-// // Position 1 : L'ID ou l'action (ex: '1')
-
-// die("<pre>" . print_r($urlSegments, true) . "</pre>");
-
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type");
@@ -28,9 +17,11 @@
 
     use Paull\Backend\Controllers\MainController;
     use Paull\Backend\Controllers\TaskController;
+    use Paull\Backend\Controllers\UserController;
     
     $mainController = new MainController();
     $taskController = new TaskController();
+    $usersController = new UserController();
 
 
 	if (empty($_GET['page'])) {
@@ -63,7 +54,11 @@
             $taskController->addTask();
             break;
 
+        case'users':
+            $usersController->index();
+            break;
         
+
         default:
             throw new Exception('Page introuvable');
     }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import TaskList from "../components/tasks/TaskList/TaskList"
 import { API_URL } from '../config/api';
+import { Link } from 'react-router-dom';
 
 const Home =()=> {
     const [tasks, setTasks] = useState([]);
@@ -28,6 +29,8 @@ return (
     <div>
         <h1>HomePage</h1>
         <TaskList tasks={tasks}/>
+        <p>Total de taches : {tasks.length}</p>
+        <Link to="/add"><button>Ajouter une tâche</button></Link>
     </div>  
 )
 }

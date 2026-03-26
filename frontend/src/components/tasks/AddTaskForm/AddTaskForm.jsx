@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from './AddTaskForm.module.css'; // On n'oublie pas le style isolé
 import { API_URL } from '../../../config/api';
 
+
 const AddTaskForm = ({ onTaskAdded }) => {
   // 1. Déclaration du State pour chaque champ
   const [title, setTitle] = useState('');
@@ -10,6 +11,10 @@ const AddTaskForm = ({ onTaskAdded }) => {
   const [category, setCategory] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  
+
+ 
+  
 
   // 2. Gestionnaire de soumission du formulaire
   const handleSubmit = async (e) => {
@@ -118,8 +123,6 @@ const AddTaskForm = ({ onTaskAdded }) => {
           <option value="3">Personnel</option>
         </select>
       </div>
-
-      
 
       <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
         {isSubmitting ? 'Envoi en cours...' : 'Ajouter la tâche'}

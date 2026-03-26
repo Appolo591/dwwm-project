@@ -35,16 +35,6 @@ const TaskDetail =() => {
     if (!task) return <p>Tâche introuvable.</p>;
     console.log(task);
     return(          
-        // <div className={styles.taskDetail} >
-        //     <h1>DetailPage</h1>
-        //     <h3>Titre : {task.title}</h3> 
-        //     <p> Description : {task.description}</p>
-        //     {task.created_at && <p> Ajouté le {formatDate(task.created_at)}</p>}   
-        //     <p> Catégorie : {task.category_name}</p>
-        //     <p>priorité : {task.priority_name} {task.priority_color} </p>
-        //     <p>status : {task.status_name}</p>
-        //     <p>utilisateur : {task.user_name}</p>
-        // </div>
         <div className={styles.taskDetail}>
             <h1>Détails de la tâche</h1>
             
