@@ -1,0 +1,27 @@
+.editform{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.updateButton{
+    width: 100%;
+    padding: 14px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s transform 0.2s;
+    margin-top: 10px;
+    cursor : pointer;
+}
+
+.updateButton:hover {
+    background-color: #166eea;
+    border: 1px solid #020c19;
+    
+}
+  

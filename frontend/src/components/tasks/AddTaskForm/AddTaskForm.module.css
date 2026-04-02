@@ -1,78 +1,96 @@
+/* Conteneur principal du formulaire */
 .formContainer {
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     max-width: 500px;
-    margin: 2rem auto; /* Centré sur la page */
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.formContainer h2 {
-    margin-top: 0;
+/* Titre du formulaire */
+.formTitle {
     color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
     text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.inputGroup {
-    margin-bottom: 1.2rem;
-}
-
-.inputGroup label {
-    display: block;
-    margin-bottom: 0.5rem;
     font-weight: 600;
+}
+
+/* Groupe d'input (Label + Champ) */
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+/* Style des Labels */
+.inputGroup label {
+    margin-bottom: 8px;
+    font-weight: 500;
     color: #34495e;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
-.inputGroup input,
-.inputGroup textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+/* Style commun pour Inputs, Textarea et Selects */
+.inputGroup input, 
+.inputGroup textarea, 
+.inputGroup select {
+    padding: 12px 15px;
+    border: 2px solid #e0e6ed;
+    border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.2s;
-    box-sizing: border-box; /* Important pour le padding */
-}
-
-.inputGroup input:focus,
-.inputGroup textarea:focus {
+    transition: all 0.3s ease;
     outline: none;
-    border-color: #4a90e2; /* La couleur de ton thème */
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    background-color: #f8f9fa;
 }
 
+/* Effet au focus (quand on clique dedans) */
+.inputGroup input:focus, 
+.inputGroup textarea:focus, 
+.inputGroup select:focus {
+    border-color: #3498db;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+}
+
+/* Spécifique au Textarea */
+.inputGroup textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Bouton Ajouter */
 .submitButton {
     width: 100%;
-    padding: 0.75rem;
-    background-color: #4a90e2;
+    padding: 14px;
+    background-color: #3498db;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background 0.3s transform 0.2s;
+    margin-top: 10px;
 }
 
 .submitButton:hover {
-    background-color: #357abd;
+    background-color: #2980b9;
 }
 
-.submitButton:disabled {
-    background-color: #bdc3c7;
-    cursor: not_allowed;
+.submitButton:active {
+    transform: scale(0.98);
 }
 
+/* Message d'erreur (si tu en as un) */
 .errorMessage {
     color: #e74c3c;
-    background-color: #fadbd8;
-    padding: 0.75rem;
-    border-radius: 4px;
-    border: 1px solid #e74c3c;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
+    background: #fdeaea;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
     text-align: center;
 }

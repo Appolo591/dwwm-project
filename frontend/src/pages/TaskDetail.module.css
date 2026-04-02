@@ -1,12 +1,4 @@
-/* .taskDetail{
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    width: 50%;
-    margin: 0 auto;
-    justify-content: center;
-    margin-top: 20px;
-} */
+
 
 /* Le conteneur principal centré */
 .taskDetail {
@@ -48,6 +40,18 @@
     margin-bottom: 25px;
     border-left: 4px solid #3498db;
 }
+
+/* Style des paragraphes de description */
+.descriptionSection p {
+    margin: 0;
+}
+
+.actionButtons{
+    display: flex;
+    justify-content :center;
+    margin-top: 20px;
+}
+
 
 /* Conteneur pour les informations "badges" */
 .metaGrid {
@@ -102,9 +106,25 @@
     background-color: rgb(247, 227, 189);
     border-radius: 10px;
     cursor: pointer;
+    font-weight: bold;
+}
+
+.btnEdit{
+    background-color: #318bae;
+    color: #333;
+}
+
+.btnDelete{
+    margin : 50px ;
+    padding: 15px; 
+    background-color: rgb(232, 80, 53);
+    border-radius: 10px;
+    cursor: pointer;
+    color: rgb(33, 33, 33);
 }
 
 .btn:hover{
     background-color: rgb(237, 155, 83);
     box-shadow: #888 2px 2px 5px;
 }
+

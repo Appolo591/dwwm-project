@@ -7,25 +7,32 @@ import EditTask from './pages/EditTask';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import TaskDetail from './pages/TaskDetail';
+import {Toaster} from 'react-hot-toast';
 
 function App() {
 
-
   return (
-    
-    <Routes>        
-      <Route path="/" element={<Layout/>} >
-        <Route index element={<Home/>} />
-        <Route path="task/:id" element={<TaskDetail/>} />
-        <Route path="add" element={<AddTask/>} />
-        <Route path="edit/:id" element={<EditTask/>} />
-        <Route path="delete/:id" element={<h2>Suppression de la tâche</h2>} />
-        <Route path="login" element={<Login/>} />
-        <Route path="register" element={<Register/>} />
-        <Route path="logout" element={<h2>Logout</h2>} />
-        <Route path="*" element={<h2>Oups ! Page introuvable.</h2>} />
-      </Route>  
-    </Routes>
+    <>
+      <Toaster position = "top-center" 
+              reverseOrder = {false} 
+              toastOptions={{
+                duration: 4000,
+                className: 'custom-toast',
+              }}
+      />
+      <Routes>        
+        <Route path="/" element={<Layout/>} >
+          <Route index element={<Home/>} />
+          <Route path="task/:id" element={<TaskDetail/>} />
+          <Route path="add" element={<AddTask/>} />
+          <Route path="edit/:id" element={<EditTask/>} />
+          <Route path="login" element={<Login/>} />
+          <Route path="register" element={<Register/>} />
+          <Route path="logout" element={<h2>Logout</h2>} />
+          <Route path="*" element={<h2>Oups ! Page introuvable.</h2>} />
+        </Route>  
+      </Routes>
+    </>
   )
 }
 

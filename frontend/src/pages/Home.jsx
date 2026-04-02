@@ -27,10 +27,8 @@ const Home =()=> {
 
 return (
     <div>
-        <h1>HomePage</h1>
         <TaskList tasks={tasks}/>
-        <p>Total de taches : {tasks.length}</p>
-        <Link to="/add"><button>Ajouter une tâche</button></Link>
+        <Link to="/add"><button className="btn btn-secondary">Ajouter une tâche</button></Link>
     </div>  
 )
 }

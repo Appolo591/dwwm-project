@@ -3,9 +3,15 @@
     // var_dump($_GET['page']); die();
 
     header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+    header("Access-Control-Allow-Methods: GET, POST,DELETE,PUT, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type");
     header("Content-Type: application/json");
+
+    
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+        http_response_code(200);
+        exit();
+    }
 
     define("ROOT", str_replace("index.php", "", (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . $_SERVER["PHP_SELF"])) ;
 
@@ -57,7 +63,24 @@
         case'users':
             $usersController->index();
             break;
+
+        case 'edit':
+            $id = $url[1];
+            if (isset($id)) {
+                $taskController->editTask($id); 
+            } else {
+                throw new Exception('ID de la tâche manquant');
+            }
+            break;
         
+        case 'delete':
+            $id = $url[1];
+            if (isset($id)) {
+                $taskController->deleteTask($id); 
+            } else {
+                throw new Exception('ID de la tâche manquant');
+            }
+            break;
 
         default:
             throw new Exception('Page introuvable');

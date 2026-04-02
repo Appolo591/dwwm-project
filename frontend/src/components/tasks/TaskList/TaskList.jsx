@@ -6,7 +6,7 @@ const TaskList = ({tasks}) => {
 
   return (
     <>
-      <h2>Ma Liste de Tâches (via PHP API)</h2>
+      <h1>Ma Liste de Tâches</h1>
       <ul className= {styles.taskList} >
         {tasks.map(task => (
             <li >
@@ -14,6 +14,7 @@ const TaskList = ({tasks}) => {
             </li>
         ))}
       </ul>
+      <p>Total de tâches : {tasks.length}</p>
     </>
   );
 };

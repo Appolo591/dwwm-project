@@ -42,11 +42,11 @@ class TaskManager {
     }
 
     //  ajouter une tâche
-    public function addTask($title, $description, $priority, $category) {
-        $sql = "INSERT INTO tasks (title, description, priority, category_id ,created_at) 
-                VALUES (?, ? ,?, ?, NOW())";
+    public function addTask($title, $description, $priority, $category , $user_id) {
+        $sql = "INSERT INTO tasks (title, description, priority, category_id , user_id, created_at) 
+                VALUES (?, ? ,?, ?,?, NOW())";
         $stmt = $this->pdo->prepare($sql);
-        $success = $stmt->execute([$title, $description, $priority, $category,]);
+        $success = $stmt->execute([$title, $description, $priority, $category,$user_id]);
         if($success) {
             $taskId = $this->pdo->lastInsertId();
             return $taskId;
@@ -55,15 +55,19 @@ class TaskManager {
     }
 
     //   modifier une tâche
-    public function updateTask($id, $title, $description) {
-        $stmt = $this->pdo->prepare("UPDATE tasks SET title = ?, description = ? WHERE id = ?");
-        $stmt->execute([$title, $description, $id]);
+    public function editTask($id, $title, $description , $priority, $category) {
+        $sql = "UPDATE tasks 
+                SET title = ?, description = ?, priority = ?, category_id = ? , updated_at = NOW() 
+                WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$title, $description, $priority, $category, $id]);
     }
 
     //  supprimer une tâche
     public function deleteTask($id) {
         $stmt = $this->pdo->prepare("DELETE FROM tasks WHERE id = ?");
         $stmt->execute([$id]);
+        
     }
 
 }
