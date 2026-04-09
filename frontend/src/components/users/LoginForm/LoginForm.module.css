@@ -1,0 +1,26 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: rgb(237, 226, 247);
+}
+
+.links{
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.links a{
+    text-decoration: underline;
+    color: inherit;
+    cursor: pointer;
+    margin: 10px 10px 0 10px;
+}
+
+.error{
+    color: red;
+}
+

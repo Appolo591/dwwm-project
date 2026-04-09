@@ -42,10 +42,6 @@
             $mainController->index();
             break;
 
-        // case 'tasks':
-        //     $taskController->allTasks();
-        //     break;  
-
         case 'task': 
             $id = $url[1];
             if (isset($id)) {
@@ -81,6 +77,25 @@
                 throw new Exception('ID de la tâche manquant');
             }
             break;
+        
+        case 'register':
+            $usersController->createUser();
+            break;
+
+        case 'profil':
+            $id = $url[1];
+            if (isset($id)) {
+                // On passe l'ID récupéré dans $url[1] à la méthode
+                $usersController->oneUser($id); 
+            } else {
+                throw new Exception('ID de la tâche manquant');
+            }
+            break;
+            break;
+        
+        // case 'login':
+        //     $usersController->login();
+        //     break;
 
         default:
             throw new Exception('Page introuvable');

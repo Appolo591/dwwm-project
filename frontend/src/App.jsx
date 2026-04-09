@@ -7,6 +7,8 @@ import EditTask from './pages/EditTask';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import TaskDetail from './pages/TaskDetail';
+import Profil from './pages/Profil';
+import ResetPassword from './pages/ResetPassword';
 import {Toaster} from 'react-hot-toast';
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
           <Route path="login" element={<Login/>} />
           <Route path="register" element={<Register/>} />
           <Route path="logout" element={<h2>Logout</h2>} />
+          <Route path="profil/:id" element={<Profil/>} />
+          <Route path="reset-password" element={<ResetPassword/>} />
           <Route path="*" element={<h2>Oups ! Page introuvable.</h2>} />
         </Route>  
       </Routes>
