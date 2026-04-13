@@ -43,4 +43,25 @@ class UserManager {
         }
         return false;
     }
+
+    public function emailExists($email) {
+        $sql = "SELECT * 
+                FROM users 
+                WHERE email = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$email]);
+        $results = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $results !== false;
+    }
+
+    public function getUserByName($name) {
+        $sql = "SELECT * 
+                FROM users 
+                WHERE name = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$name]);
+        $results = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $results ;
+    }
+    
 }

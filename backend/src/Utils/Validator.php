@@ -10,6 +10,9 @@ class Validator {
         if (empty($data['email']) || empty($data['password']) || empty($data['name'])) {
             return "Tous les champs sont obligatoires.";
         }
+        if (strlen($data['name']) < 3) {
+            return "Le nom doit contenir au moins 3 caractères.";
+        }
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             return "Email invalide.";
         }
@@ -22,8 +25,8 @@ class Validator {
 
     // Pour la CONNEXION : Plus souple
     public static function validateLogin($data) {
-        if (empty($data['email']) || empty($data['password'])) {
-            return "Email et mot de passe requis.";
+        if (empty($data['name']) || empty($data['password'])) {
+            return "nom et mot de passe requis.";
         }
         return true;
     }

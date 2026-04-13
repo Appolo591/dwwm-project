@@ -44,9 +44,11 @@ const RegisterForm = () => {
 
             if (response.ok) { 
                 toast.success('Inscription reussie !'); 
+
+                const newUserId = result.data.id;
                 
                 setTimeout(() => {
-                    navigate("/profil") ;
+                    navigate(`/profil/${newUserId}`);
                 }, 2000);
             }else{
                 toast.error(result.message || 'Une erreur est survenue lors de l\'inscription.');

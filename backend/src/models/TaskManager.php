@@ -41,6 +41,20 @@ class TaskManager {
         return $results;
     }
 
+    public function getTasksByUser($userId): array | false {
+        $sql = "SELECT t.*, c.name AS category_name, u.name AS user_name 
+                FROM tasks t
+                LEFT JOIN users u ON t.user_id = u.id
+                LEFT JOIN categories c ON t.category_id = c.id
+                WHERE t.user_id = ?
+                ORDER BY t.id ASC";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$userId]);
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $results;
+    }
+
     //  ajouter une tâche
     public function addTask($title, $description, $priority, $category , $user_id) {
         $sql = "INSERT INTO tasks (title, description, priority, category_id , user_id, created_at) 

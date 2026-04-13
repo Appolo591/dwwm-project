@@ -3,8 +3,8 @@
     // var_dump($_GET['page']); die();
 
     header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: GET, POST,DELETE,PUT, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type");
+    header("Access-Control-Allow-Methods: GET,POST,DELETE,PUT,OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
     header("Content-Type: application/json");
 
     
@@ -24,10 +24,13 @@
     use Paull\Backend\Controllers\MainController;
     use Paull\Backend\Controllers\TaskController;
     use Paull\Backend\Controllers\UserController;
+    use Paull\Backend\Controllers\AuthController;
+    
     
     $mainController = new MainController();
     $taskController = new TaskController();
     $usersController = new UserController();
+    $authController = new AuthController();
 
 
 	if (empty($_GET['page'])) {
@@ -40,6 +43,13 @@
 	switch ($url[0]) {
         case 'accueil':
             $mainController->index();
+            break;
+            
+        case 'tasks':
+            $mainController->index();
+            if (isset($url[1])  && is_numeric($url[1])) {
+                $taskController->tasksByUser($url[1]);
+            }
             break;
 
         case 'task': 
@@ -91,11 +101,16 @@
                 throw new Exception('ID de la tâche manquant');
             }
             break;
-            break;
         
-        // case 'login':
-        //     $usersController->login();
-        //     break;
+        case 'token':
+            $myToken = $authController->createToken();
+            $authController->verifyToken($myToken);
+            
+            break;
+
+        case 'login':
+            $authController->login();
+            break;
 
         default:
             throw new Exception('Page introuvable');

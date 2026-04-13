@@ -2,6 +2,8 @@
 namespace Paull\Backend\Controllers; // On suit le chemin PSR-4 + le nom du dossier
 use Exception;
 use Paull\Backend\Models\TaskManager;
+use Paull\Backend\Controllers\AuthController;
+use Paull\Backend\Utils\Utilities;
 
 
 class TaskController {
@@ -33,6 +35,40 @@ class TaskController {
         "message" => "Détails de la tâche",
         "data" => $task
         ]);
+    }
+
+    public function tasksByUser($id) {
+
+    //vérification du token
+        $userData = AuthController::checkAuth();
+        
+        if($userData->uid != $id) {
+            Utilities::sendJson(401, ["message" => "Accès refusé. Token manquant."]);
+        }
+
+        $taskManager = new TaskManager();
+        $tasks = $taskManager->getTasksByUser($id);
+
+        if (ob_get_length()) ob_clean();
+
+        header("Content-Type: application/json; charset=utf-8");
+
+        if (!$tasks) {
+            http_response_code(404); // Non trouvé
+            echo json_encode([
+                "status" => "error",
+                "message" => "Liste de tâches introuvable."
+            ]);
+            return;
+        }
+        http_response_code(200);
+        echo json_encode([
+            "status" => "success",
+            "count" => count($tasks),
+            "message" => "Liste des tâches",
+            "data" => $tasks
+            ]);
+        exit;
     }
 
     public function addTask() {
@@ -111,7 +147,7 @@ class TaskController {
         $taskManager = new TaskManager();
 
         try{
-            $success = $taskManager->editTask($id, $title, $description, $priority, $category);
+            $taskManager->editTask($id, $title, $description, $priority, $category);
             
             http_response_code(200);
             echo json_encode([
