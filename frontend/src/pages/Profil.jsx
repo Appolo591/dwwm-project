@@ -62,7 +62,7 @@ const Profil = () => {
                 <p><strong>Email :</strong> {user.email}</p>
                 {/* On n'affiche JAMAIS le mot de passe, même haché */}
             </div>
-            <button onClick={() => window.history.back()}>Retour</button>
+            {/* <button onClick={() => window.history.back()}>Retour</button> */}
 
         </div>
     );

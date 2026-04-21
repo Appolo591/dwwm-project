@@ -1,12 +1,14 @@
-import { Link } from 'react-router-dom'
+import { Link ,useNavigate } from 'react-router-dom'
 import styles from './LoginForm.module.css'
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { AuthContext } from '../../../context/AuthContext'
 import { API_URL } from '../../../config/api';
 
 const LoginForm = () => {
 
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
     const handleLogin = async(e) => {
         e.preventDefault()
@@ -27,12 +29,15 @@ const LoginForm = () => {
                 toast.success('Connexion reussie !'); 
 
         //stockage du token et des infos de l'utilisateur dans le localstorage
-                localStorage.setItem('token', result.token);
-                localStorage.setItem('user', JSON.stringify(result.user));
+                // localStorage.setItem('token', result.token);
+                // localStorage.setItem('user', JSON.stringify(result.user));
+
+                //Stockage du tocken , user , et isLoggedIn dans le context(navbar )
+                login(result.token, result.user);
 
                 setTimeout(() => {
                     navigate(`/profil/${result.user.id}`);
-                }, 2000);
+                }, 1000);
             }else{
                 toast.error(result.message || 'Une erreur est survenue lors de la connexion.');
             }
@@ -48,7 +53,7 @@ const LoginForm = () => {
             <form  className = {styles.form} onSubmit = {handleLogin} >
                 <legend>formulaire de connexion</legend>
                 <label htmlFor="name">Nom</label>
-                <input type="text" name="name" id="name" autofocus required  />
+                <input type="text" name="name" id="name" autoFocus required  />
 
                 <label htmlFor="password">Mot de Passe</label>
                 <input type="password" name="password" id="password" required/>

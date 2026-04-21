@@ -6,7 +6,7 @@ const TaskList = ({tasks}) => {
 
   return (
     <>
-      <h1>Ma Liste de Tâches</h1>
+      <h1>La liste de toutes les Tâches</h1>
       <ul className= {styles.taskList} >
         {tasks.map(task => (
             <li >
