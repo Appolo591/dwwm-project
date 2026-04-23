@@ -25,12 +25,12 @@ const Navbar =()=> {
 
   return (
   <nav className={styles.navbar}>
-    {location.pathname !== '/' && <Link to="/" className={`${styles.active} ${styles.navLink}`} >AllTasks</Link>}
+    {location.pathname !== '/' && <Link to="/" className={`${styles.active} ${styles.navLink}`} >Accueil</Link>}
     
     {isLoggedIn ? (
                 // --- CE QU'ON VOIT QUAND ON EST CONNECTÉ ---
                 <>
-                    <Link to="/tasks">Mes Tâches</Link>
+                    <Link to={`/tasks/${user?.id}`}>Mes Tâches</Link>
                     <Link to={`/profil/${user?.id}`}>Mon Profil</Link> 
                     <button onClick={handleLogout} style={{ color: 'red' }}>
                         Déconnexion

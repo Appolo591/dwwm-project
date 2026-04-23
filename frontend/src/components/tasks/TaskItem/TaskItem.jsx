@@ -20,7 +20,7 @@ function TaskItem({ task }) {
                 <h3>{task.title}</h3> 
                 <p>{task.description}</p>
                 {task.created_at && <span> Ajouté le {formatDate(task.created_at)}</span>}
-                
+                <span>user {task.user_id}</span>
             </div>
             </Link>
         

@@ -1,0 +1,31 @@
+.btnContainer{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    color: #000;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.btnContainer button {
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    color: #000;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.btnContainer :hover{
+    background-color: #6d6767;
+    color: #fff;
+}
+

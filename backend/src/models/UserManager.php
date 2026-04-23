@@ -64,4 +64,8 @@ class UserManager {
         return $results ;
     }
     
+    public function deleteUser($id) {
+        $stmt = $this->pdo->prepare("DELETE FROM users WHERE id = ?");
+        $stmt->execute([$id]);    
+    }
 }

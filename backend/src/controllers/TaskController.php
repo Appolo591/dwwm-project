@@ -39,6 +39,8 @@ class TaskController {
 
     public function tasksByUser($id) {
 
+        // print_r(getallheaders());
+        // exit;
     //vérification du token
         $userData = AuthController::checkAuth();
         

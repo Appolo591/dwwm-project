@@ -3,6 +3,7 @@
 
     use Paull\Backend\Models\UserManager;
     use Paull\Backend\Utils\Validator;
+    use Paull\Backend\Utils\Utilities;
 
     class UserController {
 
@@ -91,5 +92,23 @@
 
             exit; // On arrête tout pour éviter qu'un autre script ajoute du texte après
 
+        }
+
+        public function deleteUser($id) {
+            //on vérifie que l'user est connecté
+            $decoded = AuthController::checkAuth();
+
+            if($decoded->uid != $id) {
+                Utilities::sendJson(403, ["status" => "error", "message" => "Vous n'avez pas le droit de supprimer ce compte."]);
+                return;
+            }
+
+            $userManager = new UserManager();
+            $result = $userManager->deleteUser($id);
+            echo json_encode([
+                "status" => "success",
+                "message" => "User supprimé avec succès.",
+                "data" => $result
+            ]);
         }
     }

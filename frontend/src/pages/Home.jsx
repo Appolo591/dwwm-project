@@ -8,7 +8,6 @@ const Home =()=> {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Remplace par ton URL exacte calculée par ROOT dans ton PHP
         fetch(`${API_URL}/accueil`)
             .then(response => response.json())
             .then(result => {

@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import TaskDetail from './pages/TaskDetail';
 import Profil from './pages/Profil';
 import ResetPassword from './pages/ResetPassword';
+import MyTasks from './pages/MyTasks';
 import {Toaster} from 'react-hot-toast';
 
 function App() {
@@ -24,15 +25,23 @@ function App() {
       />
       <Routes>        
         <Route path="/" element={<Layout/>} >
-          <Route index element={<Home/>} />
+          <Route index element={<h1> Bienvenue sur la Page d' Accueil</h1>} />
           <Route path="task/:id" element={<TaskDetail/>} />
           <Route path="add" element={<AddTask/>} />
           <Route path="edit/:id" element={<EditTask/>} />
           <Route path="login" element={<Login/>} />
           <Route path="register" element={<Register/>} />
-          <Route path="logout" element={<h2>Logout</h2>} />
+          <Route path="logout">
+            {/* Cette route s'affiche sur /logout */}
+            <Route index element={<h2>Logout</h2>} />
+            {/* Cette route s'affiche sur /logout/test */}
+            <Route path="test" element={<h3>test</h3>} />
+          </Route>
           <Route path="profil/:id" element={<Profil/>} />
           <Route path="reset-password" element={<ResetPassword/>} />
+          <Route path="tasks" element={<Home/>} />
+          <Route path="tasks/:id" element={<MyTasks/>} />
+          <Route path="users" element={<h2> liste des users</h2>} />
           <Route path="*" element={<h2>Oups ! Page introuvable.</h2>} />
         </Route>  
       </Routes>

@@ -1,5 +1,6 @@
 import styles from './AddTaskForm.module.css'
-import { useState } from 'react'
+import { useState ,useContext} from 'react'
+import { AuthContext } from '../../../context/AuthContext';
 import { API_URL } from '../../../config/api';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
@@ -11,11 +12,12 @@ const AddTaskForm = ({onTaskAdded}) => {
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('');
     const [category, setCategory] = useState('');
-    const [userId, setUserId] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
+    
 
      // 2. Gestionnaire de soumission du formulaire
     const handleSubmit = async (e) => {
@@ -23,6 +25,8 @@ const AddTaskForm = ({onTaskAdded}) => {
         setError('');
         setIsSubmitting(true);
 
+    const token = localStorage.getItem("token");
+    
         // Petite validation côté Front
         if (!title.trim() || !description.trim()) {
             setError('Veuillez remplir tous les champs.');
@@ -30,13 +34,13 @@ const AddTaskForm = ({onTaskAdded}) => {
             return;
         }
 
-        console.log("Données envoyées au PHP :", {
-            title: title,
-            description: description,
-            priority: priority,
-            category_id: category,
-            user_id: userId
-        })
+        // console.log("Données envoyées au PHP :", {
+        //     title: title,
+        //     description: description,
+        //     priority: priority,
+        //     category_id: category,
+        //     user_id: userId
+        // })
 
         try {
             // 3. Appel API vers ton Backend PHP (pense à ton API_URL config)
@@ -44,8 +48,9 @@ const AddTaskForm = ({onTaskAdded}) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({  title: title, description: description, priority: priority, category_id: category, user_id: userId }), // On envoie les données en JSON
+                body: JSON.stringify({  title: title, description: description, priority: priority, category_id: category, user_id: user?.id }), // On envoie les données en JSON
             });
 
             const result = await response.json();
@@ -57,7 +62,6 @@ const AddTaskForm = ({onTaskAdded}) => {
                 setDescription('');
                 setPriority('');
                 setCategory('');
-                setUserId('');
                 setError('');   
                 
                 if (onTaskAdded) {
@@ -110,16 +114,6 @@ const AddTaskForm = ({onTaskAdded}) => {
                 <option value="low">Basse (Low)</option>
                 <option value="medium">Moyenne (Medium)</option>
                 <option value="high">Haute (High)</option>
-                </select>
-            </div>
-
-            <div className={styles.inputGroup}>
-                <label htmlFor="user_id">Utilisateur</label>
-                <select id="user_id" value={userId} onChange={(e) => setUserId(e.target.value)}>
-                <option value="" disabled >Assigner à...</option>
-                <option value="1">Utilisateur 1</option>
-                <option value="4">Utilisateur 4</option>
-                <option value="5">Utilisateur 5</option>
                 </select>
             </div>
 

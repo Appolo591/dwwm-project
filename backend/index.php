@@ -47,14 +47,17 @@
             
         case 'tasks':
             $mainController->index();
-            if (isset($url[1])  && is_numeric($url[1])) {
-                $taskController->tasksByUser($url[1]);
+            $id = $url[1];
+            if (isset($id)  && is_numeric($id)) {
+                $taskController->tasksByUser($id);
+            } else {
+                throw new Exception('ID de la tâche manquant');
             }
             break;
 
         case 'task': 
             $id = $url[1];
-            if (isset($id)) {
+            if (isset($id) && is_numeric($id)) {
                 // On passe l'ID récupéré dans $url[1] à la méthode
                 $taskController->oneTask($id); 
             } else {
@@ -94,9 +97,13 @@
 
         case 'profil':
             $id = $url[1];
-            if (isset($id)) {
-                // On passe l'ID récupéré dans $url[1] à la méthode
-                $usersController->oneUser($id); 
+            if (isset($id) && is_numeric($id)) {
+                $method = $_SERVER['REQUEST_METHOD'];
+                if ($method === 'DELETE') {
+                    $usersController->deleteUser($id);
+                }else {
+                    $usersController->oneUser($id);  
+                }
             } else {
                 throw new Exception('ID de la tâche manquant');
             }
@@ -111,6 +118,10 @@
         case 'login':
             $authController->login();
             break;
+
+        // case 'deleteUser':
+        //     $authController->logout();
+        //     break;
 
         default:
             throw new Exception('Page introuvable');
