@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import styles from './Profil.module.css'
 import { AuthContext } from "../context/AuthContext";
 
+
 const Profil = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -92,11 +93,14 @@ const Profil = () => {
     if (!user) return <p>Aucun utilisateur trouvé.</p>;
 
     return (
-        <div className="profil-container">
-            <div className="user-card">
+        <div className={styles.profilContainer}>
+            <div className={styles.userCard}>
+                <img src ="/img/male.jpg" alt="Avatar" className={styles.avatar}/>
+                <div>
                 <p><strong>Profil ID :</strong> {id}</p>
                 <p><strong>Nom :</strong> {user.name}</p>
                 <p><strong>Email :</strong> {user.email}</p>
+                </div>
             </div>
             <div className={styles.btnContainer}>
                 <button>Modifier le profil</button>

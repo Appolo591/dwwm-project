@@ -1,3 +1,17 @@
+.avatar {
+  width: 150px;       /* Largeur fixe */
+  height: 150px;      /* Hauteur fixe (égale à la largeur pour un carré) */
+  object-fit: cover;  /* Conserve les proportions sans déformer */
+  border-radius: 50%; /* Rend l'image ronde */
+  border: 3px solid #ddd; /* Optionnel : une petite bordure */
+  margin-bottom: 1rem; /* Espace avec le texte en dessous */
+  display: block;     /* Pour bien centrer si besoin */
+  margin-left: auto;  /* Centrage horizontal */
+  margin-right: auto; /* Centrage horizontal */
+}
+
+
+
 .btnContainer{
     margin-top: 20px;
     margin-bottom: 20px;
