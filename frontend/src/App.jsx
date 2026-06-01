@@ -11,6 +11,7 @@ import Profil from './pages/Profil';
 import ResetPassword from './pages/ResetPassword';
 import MyTasks from './pages/MyTasks';
 import {Toaster} from 'react-hot-toast';
+import ButtonUsage from './components/utils/ButtonUsage';
 
 function App() {
 
@@ -25,7 +26,7 @@ function App() {
       />
       <Routes>        
         <Route path="/" element={<Layout/>} >
-          <Route index element={<h1> Bienvenue sur la Page d' Accueil</h1>} />
+          <Route index element={<ButtonUsage title = {"Page d'accueil"}/>} />
           <Route path="task/:id" element={<TaskDetail/>} />
           <Route path="add" element={<AddTask/>} />
           <Route path="edit/:id" element={<EditTask/>} />
