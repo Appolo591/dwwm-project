@@ -5,7 +5,7 @@ namespace Paull\Backend\Models;
 use Paull\Backend\Core\Database;
 
 class UserManager {
-    private $pdo;
+    private mixed $pdo;
 
     public function __construct() {
         $this->pdo = Database::getConnection();
@@ -22,7 +22,7 @@ class UserManager {
         return $results ;
     }
 
-    public function getOneUser($id): array | false {
+    public function getOneUser(int $id): array | false {
         $sql = "SELECT * 
                 FROM users 
                 WHERE id = ?";
@@ -32,7 +32,7 @@ class UserManager {
         return $results ;
     }
 
-    public function createUser($name, $email, $password) {
+    public function createUser(string $name,string  $email, string $password) {
         $sql = "INSERT INTO users (name, email, password) 
                 VALUES (?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
@@ -44,7 +44,7 @@ class UserManager {
         return false;
     }
 
-    public function emailExists($email) {
+    public function emailExists(string $email) {
         $sql = "SELECT * 
                 FROM users 
                 WHERE email = ?";
@@ -54,7 +54,7 @@ class UserManager {
         return $results !== false;
     }
 
-    public function getUserByName($name) {
+    public function getUserByName(string $name) {
         $sql = "SELECT * 
                 FROM users 
                 WHERE name = ?";
@@ -64,7 +64,7 @@ class UserManager {
         return $results ;
     }
     
-    public function deleteUser($id) {
+    public function deleteUser(int $id) {
         $stmt = $this->pdo->prepare("DELETE FROM users WHERE id = ?");
         $stmt->execute([$id]);    
     }

@@ -36,7 +36,7 @@ const LoginForm = () => {
                 login(result.token, result.user);
 
                 setTimeout(() => {
-                    navigate(`/profil/${result.user.id}`);
+                    navigate(`/tasks/${result.user.id}`);
                 }, 1000);
             }else{
                 toast.error(result.message || 'Une erreur est survenue lors de la connexion.');
@@ -62,7 +62,7 @@ const LoginForm = () => {
 
                 <div className={styles.links}>
                     <Link to="/register">S'inscrire</Link>
-                    <Link to="/reset-password">Mdp oublié ?</Link>
+                    <Link to="/contact">Mdp oublie ?</Link>
                 </div>
 
             </form>

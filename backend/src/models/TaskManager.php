@@ -4,7 +4,7 @@ namespace Paull\Backend\Models;
 use Paull\Backend\Core\Database;
 
 class TaskManager {
-    private $pdo;
+    private mixed $pdo;
 
     public function __construct() {
         // On récupère la connexion une seule fois à l'instanciation
@@ -26,7 +26,7 @@ class TaskManager {
         return $results;
     }
 
-    public function getTaskById($id): array | false {
+    public function getTaskById(int $id): array | false {
         
         $sql = "SELECT t.*, c.name AS category_name, u.name AS user_name 
                 FROM tasks t
@@ -41,7 +41,7 @@ class TaskManager {
         return $results;
     }
 
-    public function getTasksByUser($userId): array | false {
+    public function getTasksByUser(int $userId): array | false {
         $sql = "SELECT t.*, c.name AS category_name, u.name AS user_name 
                 FROM tasks t
                 LEFT JOIN users u ON t.user_id = u.id
@@ -56,7 +56,7 @@ class TaskManager {
     }
 
     //  ajouter une tâche
-    public function addTask($title, $description, $priority, $category , $user_id) {
+    public function addTask(string $title,string $description,string $priority,string $category , int $user_id) {
         $sql = "INSERT INTO tasks (title, description, priority, category_id , user_id, created_at) 
                 VALUES (?, ? ,?, ?,?, NOW())";
         $stmt = $this->pdo->prepare($sql);
@@ -69,7 +69,7 @@ class TaskManager {
     }
 
     //   modifier une tâche
-    public function editTask($id, $title, $description , $priority, $category) {
+    public function editTask(int $id, string $title,string  $description , string $priority, string $category) {
         $sql = "UPDATE tasks 
                 SET title = ?, description = ?, priority = ?, category_id = ? , updated_at = NOW() 
                 WHERE id = ?";
@@ -78,7 +78,7 @@ class TaskManager {
     }
 
     //  supprimer une tâche
-    public function deleteTask($id) {
+    public function deleteTask(int $id) {
         $stmt = $this->pdo->prepare("DELETE FROM tasks WHERE id = ?");
         $stmt->execute([$id]);
         

@@ -41,12 +41,15 @@
 	}
 
 	switch ($url[0]) {
-        case 'accueil':
+        // case 'accueil':
+        //     $mainController->index();
+        //     break;
+            
+        case 'all-tasks':
             $mainController->index();
             break;
-            
+
         case 'tasks':
-            $mainController->index();
             $id = $url[1];
             if (isset($id)  && is_numeric($id)) {
                 $taskController->tasksByUser($id);
@@ -119,8 +122,13 @@
             $authController->login();
             break;
 
-        // case 'deleteUser':
-        //     $authController->logout();
+        // case 'edit-profil':
+        //     $id = $url[1];
+        //     if (isset($id) && is_numeric($id)) {
+        //         $usersController->updateUser($id); 
+        //     } else {
+        //         throw new Exception('ID de la tâche manquant');
+        //     }
         //     break;
 
         default:

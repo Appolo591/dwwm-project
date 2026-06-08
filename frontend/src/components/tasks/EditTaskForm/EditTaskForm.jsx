@@ -1,29 +1,18 @@
 import styles from './EditTaskForm.module.css'
 import { useParams , useNavigate } from 'react-router-dom';
-import { useState , useEffect} from 'react';
+import { useState , useEffect , useContext} from 'react';
 import { API_URL } from '../../../config/api';
-import toast from 'react-hot-toast'; 
-
-// const handleUpdate = async (e) => {
-//     // ... ton fetch
-//     if (result.status === "success") {
-//         console.log("Le toast devrait s'afficher maintenant"); // Vérifie si ce log s'affiche
-//         toast.success('Tâche mise à jour !'); 
-        
-//         setTimeout(() => {
-//             navigate(`/task/${id}`);
-//         }, 2000);
-//     }
-// }
+import toast from 'react-hot-toast';
+import { AuthContext } from '../../../context/AuthContext';
 
 const EditTaskForm = () => {
+    const {user} = useContext(AuthContext);
     const {id} = useParams();
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('');
     const [category, setCategory] = useState('');
-
 
     const handleUpdate = async (e) => {
         e.preventDefault();
@@ -52,7 +41,7 @@ const EditTaskForm = () => {
             toast.success('Tâche mise à jour !');
             
             setTimeout(() => {
-            navigate(`/`);
+            navigate(`/tasks/${user.id}`);
             }, 2000);
         }else{
             toast.error(result.message);

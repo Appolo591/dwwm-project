@@ -16,7 +16,7 @@
 
 // Chargement de la clé secrète dans .env
 
-function getEnvValue($key) {
+function getEnvValue(mixed $key) {
     $path = __DIR__ . '/../../.env';
     
     // 1. On vérifie si le fichier existe pour éviter un Warning de lecture

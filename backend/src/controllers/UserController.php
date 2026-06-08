@@ -3,7 +3,9 @@
 
     use Paull\Backend\Models\UserManager;
     use Paull\Backend\Utils\Validator;
-    use Paull\Backend\Utils\Utilities;
+    // use Paull\Backend\Utils\Utilities;
+
+    use Firebase\JWT\JWT;
 
     class UserController {
 
@@ -18,7 +20,7 @@
             ]);
         }
 
-        public function oneUser($id) {
+        public function oneUser(int $id) {
             $userManager = new UserManager();
             $user = $userManager->getOneUser($id);
             echo json_encode([
@@ -43,7 +45,6 @@
                 return;
             }
 
-            
             $userManager = new UserManager();
 
             //méthode pour savoir si l'email existe déja 
@@ -72,6 +73,16 @@
 
             $userId = $userManager->createUser($data['name'], $data['email'], $hashedPassword);
 
+        $payload = [
+            "iat" => time(),          // Heure de création
+            "exp" => time() + 3600,   // Expire dans 1 heure
+            "uid" => $userId,     // On cache l'ID de l'user dedans
+            "name" => $data['name'] ,  // Et son nom pour l'affichage React
+            "email" => $data['email']
+        ];
+
+            $token = JWT::encode($payload, JWT_SECRET, 'HS256');
+
             // 1. On nettoie les données pour la réponse (on retire le password)
             unset($data['password']); 
 
@@ -87,6 +98,7 @@
             echo json_encode([
                 "status" => "success",
                 "message" => "User created",
+                "token" => $token,
                 "data" => $data 
             ]);
 
@@ -94,21 +106,20 @@
 
         }
 
-        public function deleteUser($id) {
+        public function deleteUser(int $id) {
             //on vérifie que l'user est connecté
-            $decoded = AuthController::checkAuth();
+            // $decoded = AuthController::checkAuth();
 
-            if($decoded->uid != $id) {
-                Utilities::sendJson(403, ["status" => "error", "message" => "Vous n'avez pas le droit de supprimer ce compte."]);
-                return;
-            }
+            // if($decoded->uid != $id) {
+            //     Utilities::sendJson(403, ["status" => "error", "message" => "Vous n'avez pas le droit de supprimer ce compte."]);
+            //     return;
+            // }
 
             $userManager = new UserManager();
-            $result = $userManager->deleteUser($id);
+            $userManager->deleteUser($id);
             echo json_encode([
                 "status" => "success",
-                "message" => "User supprimé avec succès.",
-                "data" => $result
+                "message" => "User supprimé avec succès."
             ]);
         }
     }

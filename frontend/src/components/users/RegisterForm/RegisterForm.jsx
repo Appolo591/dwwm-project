@@ -1,9 +1,12 @@
-import { useState } from "react"
+import { useState ,useContext} from "react"
 import { API_URL } from "../../../config/api";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
 
 const RegisterForm = () => {
+
+    const {login} = useContext(AuthContext);
     // On crée un état pour stocker les données du formulaire
     const [formData, setFormData] = useState({
         name: '',
@@ -45,10 +48,10 @@ const RegisterForm = () => {
             if (response.ok) { 
                 toast.success('Inscription reussie !'); 
 
-                const newUserId = result.data.id;
+                login(result.token, result.data);
                 
                 setTimeout(() => {
-                    navigate(`/profil/${newUserId}`);
+                    navigate(`/profil/${result.data.id}`);
                 }, 2000);
             }else{
                 toast.error(result.message || 'Une erreur est survenue lors de l\'inscription.');

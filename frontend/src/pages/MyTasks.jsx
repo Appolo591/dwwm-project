@@ -1,47 +1,24 @@
-import { useParams } from "react-router-dom";
-import { useEffect , useState } from "react";
-import { API_URL } from "../config/api";
-import TaskList from "../components/tasks/TaskList/TaskList";
+import TaskList from '../components/tasks/TaskList/TaskList';
+import { useEffect, useState , useContext } from 'react';
+import { API_URL } from '../config/api';
+import { AuthContext } from '../context/AuthContext';
+import { Link , useParams} from 'react-router-dom';
 
 export default function MyTasks() {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { token } = useContext(AuthContext);
     const { id } = useParams();
     
-    // 2. On ajoute les headers à la requête fetch
-    // useEffect(() => {
-    //     const token = localStorage.getItem('token');
-    //     console.log("URL envoyée: ", API_URL/tasks/{id} )
-    //     fetch(`${API_URL}/tasks/${id}`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': `Bearer ${token}`
-    //         }
-    //     })
-    //         .then(response => response.json())
-    //         .then(result => {
-    //             if (result.status === "success") {
-    //                 setTasks(result.data);
-    //             }
-    //             setLoading(false);
-    //         })
-    //         .catch(error => {
-    //             console.error("Erreur de fetch:", error);
-    //             setLoading(false);
-    //         });
-    //     if(id) {
-    //         getTasks();
-    //     }
-        
-    // }, [id]);
-
     useEffect(() => {
-    const getTasks = async () => {
-        const token = localStorage.getItem("token");
-        
-        console.log("Token envoyé :", token); // Vérification console
-        console.log("ID utilisé :", id);      // Vérification console
+
+        if(!id|| !token) 
+        return;
+
+        const getTasks = async () => {
+            setLoading(true);
+            // console.log("Token envoyé :", token); // Vérification console
+            // console.log("ID utilisé :", id);      // Vérification console
 
         try {
             const response = await fetch(`${API_URL}/tasks/${id}`, {
@@ -53,9 +30,9 @@ export default function MyTasks() {
             });
 
             const result = await response.json();
-            console.log("Réponse du serveur :", result);
+            // console.log("Réponse du serveur :", result);
 
-            if (result.status === "success") {
+            if (response.ok && result.status === "success") {
                 setTasks(result.data);
             } else {
                 console.error("Le serveur a dit non :", result.message);
@@ -65,19 +42,17 @@ export default function MyTasks() {
         } finally {
             setLoading(false);
         }
-    };
-
-    if (id) {
+        };
         getTasks();
-    }
-    }, [id]);
+    }, [id, token]);
 
     if (loading) return <p>Chargement des taches...</p>;
 
     return (
         <div>
-            <h2>Les Tâches de l'utilisateur :  <strong>{id}</strong></h2>
-            <TaskList tasks={tasks}/>
+            <h1>MyTasks</h1>
+            <TaskList tasks={tasks} />
+            <Link to="/add"><button className="btn btn-secondary">Ajouter une tâche</button></Link>
         </div>
-    );
-}       
+    )
+}

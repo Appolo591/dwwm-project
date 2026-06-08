@@ -8,7 +8,7 @@ use Paull\Backend\Utils\Utilities;
 
 class TaskController {
    
-    public function oneTask($id) {
+    public function oneTask(int $id) {
 
     if (empty($id) || !is_numeric($id)) {
         http_response_code(400); // Mauvaise requête
@@ -37,15 +37,31 @@ class TaskController {
         ]);
     }
 
-    public function tasksByUser($id) {
+    public function tasksByUser(int $id) {
 
         // print_r(getallheaders());
         // exit;
-    //vérification du token
+    // vérification du token
         $userData = AuthController::checkAuth();
         
-        if($userData->uid != $id) {
-            Utilities::sendJson(401, ["message" => "Accès refusé. Token manquant."]);
+        // Ajoute ces deux lignes temporairement pour voir ce que le PHP reçoit vraiment
+        // var_dump($userData); 
+        // exit;
+
+    //     if ($userData->role === 'admin') {
+    //     Utilities::sendJson(403, [
+    //         "status" => "error",
+    //         "message" => "Accès refusé. Les administrateurs ne peuvent pas consulter les profils utilisateurs."
+    //     ]);
+    //     exit;
+    // }
+
+        if($userData->id != $id) {
+            Utilities::sendJson(403, [
+                "status" => "error",
+                "message" => "Accès refusé. Vous pouvez consulter uniquement vos propres tâches."
+                ]);  
+                exit;
         }
 
         $taskManager = new TaskManager();
@@ -55,21 +71,20 @@ class TaskController {
 
         header("Content-Type: application/json; charset=utf-8");
 
-        if (!$tasks) {
-            http_response_code(404); // Non trouvé
-            echo json_encode([
+        if ($tasks === false) {
+            Utilities::sendJson(404,[
                 "status" => "error",
                 "message" => "Liste de tâches introuvable."
             ]);
-            return;
+            exit;
         }
-        http_response_code(200);
-        echo json_encode([
+        Utilities::sendJson(200,[
             "status" => "success",
             "count" => count($tasks),
             "message" => "Liste des tâches",
             "data" => $tasks
             ]);
+        
         exit;
     }
 
@@ -123,7 +138,7 @@ class TaskController {
         }
     }
 
-    public function editTask($id) {
+    public function editTask(int $id) {
 
         // 1. LIRE LE JSON ENTRANT (Crucial pour React)
         $json = file_get_contents('php://input');
@@ -173,7 +188,7 @@ class TaskController {
             }  
     }
 
-    public function deleteTask($id) {
+    public function deleteTask(int $id) {
         $taskManager = new TaskManager();
         $taskManager->deleteTask($id);
         http_response_code(200);

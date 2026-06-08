@@ -9,8 +9,8 @@ const TaskList = ({tasks}) => {
       
       <ul className= {styles.taskList} >
         {tasks.map(task => (
-            <li >
-              <TaskItem key={task.id} task={task} />
+            <li key={task.id}>
+              <TaskItem  task={task} />
             </li>
         ))}
       </ul>

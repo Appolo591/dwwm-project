@@ -1,34 +1,15 @@
-import { useEffect, useState } from 'react';
-import TaskList from "../components/tasks/TaskList/TaskList"
-import { API_URL } from '../config/api';
-import { Link } from 'react-router-dom';
+import ButtonUsage from "../components/utils/ButtonUsage";
+import { Link } from "react-router-dom";
 
-const Home =()=> {
-    const [tasks, setTasks] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        fetch(`${API_URL}/accueil`)
-            .then(response => response.json())
-            .then(result => {
-                if (result.status === "success") {
-                    setTasks(result.data);
-                }
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error("Erreur de fetch:", error);
-                setLoading(false);
-            });
-    }, []);
-
-    if (loading) return <p>Chargement des taches...</p>;
-
-return (
-    <div>
-        <TaskList tasks={tasks}/>
-        <Link to="/add"><button className="btn btn-secondary">Ajouter une tâche</button></Link>
-    </div>  
-)
+export default function Home() {
+    return (
+        <>
+        <div>
+            <h1>Bienvenue sur My Tasks , l'application de gestion de vos tâches personnelles !!</h1>
+        </div>
+        <Link to="/login"><ButtonUsage title="Se connecter" /></Link>
+        <Link to="/register"><ButtonUsage title="S'inscrire" /></Link>
+        
+        </>
+    )
 }
-export default Home

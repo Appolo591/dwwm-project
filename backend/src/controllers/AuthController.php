@@ -41,8 +41,10 @@ class AuthController {
                 $payload = [
                     "iat" => time(),          // Heure de création
                     "exp" => time() + 3600,   // Expire dans 1 heure
-                    "uid" => $user['id'],     // On cache l'ID de l'user dedans
-                    "name" => $user['name']   // Et son nom pour l'affichage React
+                    "id" => $user['id'],     // On cache l'ID de l'user dedans
+                    "name" => $user['name'],  // Et son nom pour l'affichage React
+                    "role" => $user['role']
+                    
                 ];
 
 
@@ -53,7 +55,9 @@ class AuthController {
                     "token" => $token,
                     "user" => [
                         "id" => $user['id'],
-                        "name" => $user['name']
+                        "name" => $user['name'],
+                        "role" => $user['role']
+                        
                     ]
                 ]);   
             }else{
@@ -84,7 +88,7 @@ class AuthController {
 
     }
 
-    public function verifyToken($token) {    
+    public function verifyToken(string $token) {    
         try {
             $decoded = JWT::decode($token, new Key(JWT_SECRET, 'HS256'));
             echo "Token valide. Utilisateur ID : " . $decoded->user_id;
@@ -116,7 +120,21 @@ class AuthController {
         } catch (\Exception $e) {
             Utilities::sendJson(401, ["message" => "Token invalide ou expiré."]);
         }
-    }   
+    } 
+    
+    // public static function checkAdmin() {
+    //     //check si l'user est connecté
+    //     $decoded = self::checkAuth();
+
+    //     //check si le role dans token est admin
+    //     if(!isset($decoded->role) || $decoded->role !== 'admin') {
+    //         Utilities::sendJson(403, [
+    //             "status" => "error",
+    //             "message" => "Accès refusé. Droits admininstrateurs requis."]);
+    //     exit;
+    //     }
+    // return $decoded;
+    // }
 
     
 }

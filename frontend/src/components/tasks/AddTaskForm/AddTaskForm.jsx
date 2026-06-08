@@ -17,15 +17,13 @@ const AddTaskForm = ({onTaskAdded}) => {
 
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
+    const { token } = useContext(AuthContext);
     
-
      // 2. Gestionnaire de soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault(); // Empêche le rechargement de la page
         setError('');
         setIsSubmitting(true);
-
-    const token = localStorage.getItem("token");
     
         // Petite validation côté Front
         if (!title.trim() || !description.trim()) {
@@ -68,7 +66,7 @@ const AddTaskForm = ({onTaskAdded}) => {
                     onTaskAdded(result.data);
                 }
                 toast.success('Tâche ajoutée !');
-                navigate('/');
+                navigate(`/tasks/${user.id}`);
             } else {
                 setError(result.message || 'Une erreur est survenue côté serveur.');
                 toast.error('Une erreur est survenue.');

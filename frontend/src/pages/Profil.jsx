@@ -1,23 +1,30 @@
 import { useEffect, useState ,useContext} from "react"; 
-import { useParams } from "react-router-dom";
+import { useParams , useNavigate , Link } from "react-router-dom";
 import { API_URL } from "../config/api";
 import { toast } from "react-hot-toast" 
-import { useNavigate } from "react-router-dom";
 import styles from './Profil.module.css'
 import { AuthContext } from "../context/AuthContext";
+import Home from "./Home";
 
 
 const Profil = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const {logout} = useContext(AuthContext);
+    const { token } = useContext(AuthContext);
     const [user, setUser] = useState(null); 
     const [loading, setLoading] = useState(true); 
+    
+
+
+    const handleUpdate = () => {
+        navigate(`/edit-profil/${id}`);
+    };
 
     const handleDelete = async () => {    
         if (!window.confirm("Etes-vous sur de vouloir supprimer votre compte ?")) return;
 
-        const token = localStorage.getItem("token");
+        // const token = localStorage.getItem("token");
         try {
             const response = await fetch(`${API_URL}/profil/${id}`, {
                 method: "DELETE",
@@ -44,7 +51,7 @@ const Profil = () => {
         let isMounted = true; //Le composant est là
 
         const fetchUser = async () => {
-            const token = localStorage.getItem("token");
+            // const token = localStorage.getItem("token");
             if(!id) return;
             try {
                 const response = await fetch(`${API_URL}/profil/${id}`, {
@@ -87,7 +94,7 @@ const Profil = () => {
         return () => {
             isMounted = false;
         }
-    }, [id, navigate, logout]);
+    }, [id, token, navigate, logout]);
 
     if (loading) return <p>Chargement du profil...</p>;
     if (!user) return <p>Aucun utilisateur trouvé.</p>;
@@ -95,7 +102,7 @@ const Profil = () => {
     return (
         <div className={styles.profilContainer}>
             <div className={styles.userCard}>
-                <img src ="/img/male.jpg" alt="Avatar" className={styles.avatar}/>
+                <img src ="/img/female.jpg" alt="Avatar" className={styles.avatar}/>
                 <div>
                 <p><strong>Profil ID :</strong> {id}</p>
                 <p><strong>Nom :</strong> {user.name}</p>
@@ -103,7 +110,7 @@ const Profil = () => {
                 </div>
             </div>
             <div className={styles.btnContainer}>
-                <button>Modifier le profil</button>
+                <button onClick = {handleUpdate} hidden>Modifier le profil</button>
                 <button onClick={handleDelete}>Supprimer le compte</button>
             </div>
         </div>
