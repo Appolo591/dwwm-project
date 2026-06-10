@@ -1,0 +1,9 @@
+h1{
+    margin-top: 10px;
+}
+
+.buttons{
+    display: flex;
+    justify-content:center;
+    gap: 35px;
+}

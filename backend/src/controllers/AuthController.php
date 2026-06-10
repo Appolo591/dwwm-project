@@ -98,6 +98,7 @@ class AuthController {
     }
 
     public static function checkAuth() {
+
     // 1. On récupère le header 'Authorization' envoyé par React
     $headers = getallheaders();
     $authHeader = $headers['Authorization'] 
@@ -108,6 +109,7 @@ class AuthController {
 
         if (!$authHeader) {
             Utilities::sendJson(401, ["message" => "Accès refusé. Token manquant."]);
+            exit;
         }
 
         // Le header ressemble souvent à "Bearer le_token_ici", on récupère juste le token
@@ -119,6 +121,7 @@ class AuthController {
             return $decoded; // Si c'est bon, on renvoie les infos contenues dans le token
         } catch (\Exception $e) {
             Utilities::sendJson(401, ["message" => "Token invalide ou expiré."]);
+            exit;
         }
     } 
     

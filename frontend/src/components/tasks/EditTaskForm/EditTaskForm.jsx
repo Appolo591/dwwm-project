@@ -16,6 +16,9 @@ const EditTaskForm = () => {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
+
+        const token = localStorage.getItem('token');
+
        const updatedTask = {
            id: id,
            title: title,
@@ -29,7 +32,8 @@ const EditTaskForm = () => {
        try{
         const response = await fetch(`${API_URL}/edit/${id}`, {
             method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${token}`},
             body: JSON.stringify(updatedTask)
         });
 
@@ -53,15 +57,24 @@ const EditTaskForm = () => {
     }
 
     useEffect(() => {
-        fetch(`${API_URL}/task/${id}`)
+        const token = localStorage.getItem('token');
+        fetch(`${API_URL}/task/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}` 
+          }
+        })
           .then(response => response.json())
           .then(result => {
             if (result.status === "success"){
-            console.log(result)
+            console.log("Données de la tâche chargées :", result)
             setTitle(result.data.title);
             setDescription(result.data.description);
             setPriority(result.data.priority);
             setCategory(result.data.category_id);
+            }else{
+                toast.error(result.message||"Une erreur est survenue lors de la chargement de la tâche.");
             }
           })
           .catch(error => console.error(error));
@@ -70,7 +83,7 @@ const EditTaskForm = () => {
 
     return (
         <form method="PUT" className={styles.editform} onSubmit={handleUpdate}>
-            <legend>Formulaire de mise à jour tâche n°{id}</legend>
+            <legend>Formulaire de mise à jour de la tâche </legend>
 
 
                 <label htmlFor="title">Titre</label>
@@ -92,7 +105,7 @@ const EditTaskForm = () => {
                     <option value="2">Travail</option>
                     <option value="3">Perso</option>
                 </select>
-                <button type="submit" onClick={handleUpdate} className={styles.updateButton}>Mettre à jour</button>
+                <button type="submit" className={styles.updateButton}>Mettre à jour</button>
         </form>
     )
 }

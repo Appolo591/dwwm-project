@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { API_URL } from '../config/api';
 import { useParams , Link , useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import formatDate from '../utils/formatDate';
 import styles from './TaskDetail.module.css';
 import toast from 'react-hot-toast';
@@ -9,12 +10,20 @@ const TaskDetail =() => {
     // 1. On récupère l'ID directement depuis l'URL (ex: /task/1)
     const { id } = useParams()
     const navigate = useNavigate();
+    const {user, token} = useContext(AuthContext);
     const [task, setTask] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isDeleting, setIsDeleting] = useState(false);
 
      useEffect(() => {
-        fetch(`${API_URL}/task/${id}`)
+        
+        fetch(`${API_URL}/task/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
             .then(response => response.json())
             .then(result => {
                 if (result.status === "success") {
@@ -22,6 +31,7 @@ const TaskDetail =() => {
                     
                 }else{
                     setTask(null);
+                    toast.error(result.message || "Une erreur est survenue lors de la récupération de la tâche.");
                 }
                 setLoading(false);
             })
@@ -29,7 +39,7 @@ const TaskDetail =() => {
                 console.error("Erreur de fetch:", error);
                 setLoading(false);
             });
-    }, [id]);
+    }, [id, token]);
 
     // Fonction de suppression  
     const handleDelete = async () => {
@@ -38,21 +48,30 @@ const TaskDetail =() => {
         setIsDeleting(true);
         try {
             const response = await fetch(`${API_URL}/delete/${id}`, {
-                method: 'DELETE', // Vérifie que ton PHP accepte DELETE ou change en POST
+                method: 'DELETE', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
             });
             const result = await response.json();
 
             if (result.status === "success") {
-                // alert("Tâche supprimée avec succès !");
                 toast.success('Tâche supprimée avec succès !');
-                navigate('/'); // On redirige vers la liste
+
+            // Redirection dynamique vers la liste des tâches de l'utilisateur connecté
+                if (user?.id) {
+                    navigate(`/tasks/${user.id}`);
+                } else {
+                    navigate('/');
+                }
             } else {
-                toast.error('Une erreur est survenue lors de la suppression.');
+                toast.error(result.message || 'Une erreur est survenue lors de la suppression.');
                 setIsDeleting(false);
             }
         } catch (error) {
             console.error("Erreur suppression:", error);
-            alert("Impossible de contacter le serveur.");
+            toast.error('Imposible de contacter le serveur.');
             setIsDeleting(false);
         }
     };

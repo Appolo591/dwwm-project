@@ -3,23 +3,33 @@ import { API_URL } from "../../../config/api";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
+import styles from './RegisterForm.module.css'
 
 const RegisterForm = () => {
-
     const {login} = useContext(AuthContext);
+    const navigate = useNavigate();
+
     // On crée un état pour stocker les données du formulaire
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: ''
     });
+
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
     const [passwordError, setPasswordError] = useState("");
-    const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     // Fonction pour mettre à jour l'état quand l'utilisateur tape
     const handleChange = (e) => {
-        if (passwordError) setPasswordError("");
+        if (passwordError && e.target.name === "password"){
+           setPasswordError(""); 
+        } 
 
         setFormData({
             ...formData,
@@ -43,16 +53,18 @@ const RegisterForm = () => {
                 body: JSON.stringify(formData)
             });
             const result = await response.json();
-            console.log('données envoyées au serveur', result);
+            // console.log('données envoyées au serveur', result);
 
             if (response.ok) { 
                 toast.success('Inscription reussie !'); 
+                console.log("INSCRIPTION REUSSIE, REPO DU PHP :", result);
 
-                login(result.token, result.data);
+                const userWithCleanId = {...result.data, id: Number(result.data.id)};
+                login(result.token, userWithCleanId);
                 
                 setTimeout(() => {
-                    navigate(`/profil/${result.data.id}`);
-                }, 2000);
+                    navigate(`/profil/${userWithCleanId.id}`);
+                }, 1500);
             }else{
                 toast.error(result.message || 'Une erreur est survenue lors de l\'inscription.');
             }
@@ -63,29 +75,35 @@ const RegisterForm = () => {
     };
 
     return (
-    <>
-    <form onSubmit={handleRegister}>
-        <legend>formulaire d'inscription</legend>
+    <div className="container mt-5 px-3">
+        <form onSubmit={handleRegister} className={styles.form}>
+            <legend>formulaire d'inscription</legend>
 
-        <label htmlFor="name">Nom</label>
-        <input type="text" name="name" id="name" onChange={handleChange} />
+            <label htmlFor="name">identifiant</label>
+            <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required/>
 
-        <label htmlFor="password">Mot de Passe</label>
-        <input type="password" name="password" id="password" onChange={handleChange}/>
-        {passwordError && (
-            <p style={{ color: 'red', fontSize: '0.8rem', marginTop: '5px' }}>
-                {passwordError}
-            </p>
-        )}
+            <label htmlFor="email">Email</label>
+            <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} required/>
 
-        <label htmlFor="email">Email</label>
-        <input type="email" name="email" id="email" onChange={handleChange}/>
+            <label htmlFor="password">Mot de Passe</label>
+            <div className="input-group">
+            <input type={showPassword ? "text" : "password"} name="password" id="password" value={formData.password} onChange={handleChange} required
+                   className={`form-control ${passwordError ? 'is-invalid' : ''}`} />
+            
+            <button type="button" className="btn btn-outline-secondary" onClick={togglePasswordVisibility}>
+                {showPassword ? 'Masquer' : 'Afficher'}
+            </button>
+            </div>
 
-        <button type="submit">Inscription</button>
+            {passwordError && (
+                <div className={styles.errorFeedback}>
+                        ⚠️ {passwordError}
+                </div>
+            )}
 
-    </form> 
-        
-    </>
+            <button type="submit" className={styles.submitBtn}>Inscription</button>
+        </form> 
+    </div>
 )
 }        
 export default RegisterForm

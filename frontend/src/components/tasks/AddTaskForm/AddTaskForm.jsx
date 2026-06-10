@@ -2,10 +2,8 @@ import styles from './AddTaskForm.module.css'
 import { useState ,useContext} from 'react'
 import { AuthContext } from '../../../context/AuthContext';
 import { API_URL } from '../../../config/api';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-
-
 
 const AddTaskForm = ({onTaskAdded}) => {
     const [title, setTitle] = useState('');
@@ -15,19 +13,40 @@ const AddTaskForm = ({onTaskAdded}) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
 
-    const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
-    const { token } = useContext(AuthContext);
+    // const navigate = useNavigate();
+    const { user ,token } = useContext(AuthContext);
     
      // 2. Gestionnaire de soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault(); // Empêche le rechargement de la page
         setError('');
         setIsSubmitting(true);
+
+        // // 👇 AJOUTE CES TROIS LOGS ICI 👇
+        // console.log("=== SÉCURITÉ ADD TASK ===");
+        // console.log("1. user depuis le Context :", user);
+        // console.log("2. user depuis le localStorage :", JSON.parse(localStorage.getItem('user')));
+        // console.log("3. token utilisé :", token);
     
-        // Petite validation côté Front
+        //validation côté Front
         if (!title.trim() || !description.trim()) {
             setError('Veuillez remplir tous les champs.');
+            setIsSubmitting(false);
+            return;
+        }
+
+        //  SÉCURITÉ ANTI-ASYNCHRONISME :
+        // Si l'état "user" de React est encore vide (juste après l'inscription),
+        // on extrait immédiatement l'ID depuis le localStorage de secours.
+        const savedUser = JSON.parse(localStorage.getItem('user'));
+        const currentUserId = user?.id || savedUser?.id;
+
+        // console.log("4. ID final retenu et envoyé :", currentUserId);
+        // console.log("=========================");
+
+        if (!currentUserId) {
+            setError("Erreur de session : Impossible de récupérer votre identifiant. Veuillez vous reconnecter.");
+            toast.error("Utilisateur non identifié.");
             setIsSubmitting(false);
             return;
         }
@@ -48,7 +67,7 @@ const AddTaskForm = ({onTaskAdded}) => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({  title: title, description: description, priority: priority, category_id: category, user_id: user?.id }), // On envoie les données en JSON
+                body: JSON.stringify({  title: title, description: description, priority: priority, category_id: Number(category), user_id: Number(currentUserId) }), // On envoie les données en JSON
             });
 
             const result = await response.json();
@@ -66,7 +85,7 @@ const AddTaskForm = ({onTaskAdded}) => {
                     onTaskAdded(result.data);
                 }
                 toast.success('Tâche ajoutée !');
-                navigate(`/tasks/${user.id}`);
+                window.location.href = `/tasks/${currentUserId}`;
             } else {
                 setError(result.message || 'Une erreur est survenue côté serveur.');
                 toast.error('Une erreur est survenue.');
@@ -74,6 +93,7 @@ const AddTaskForm = ({onTaskAdded}) => {
         } catch (error) {
             console.error('Error API:', error);
             setError('Impossible de contacter le serveur');
+            toast.error('Erreur de connexion au serveur');
             
         }finally {
             setIsSubmitting(false);
@@ -97,7 +117,7 @@ const AddTaskForm = ({onTaskAdded}) => {
 
             <div className={styles.inputGroup}>
                 <label htmlFor="category">Catégorie</label>
-                <select id="category" value={category} onChange={(e) => setCategory(e.target.value)}>
+                <select id="category" value={category} onChange={(e) => setCategory(e.target.value)} required>
                 <option value="" disabled >Choisir une catégorie</option>
                 <option value="1">Sport</option>
                 <option value="2">Travail</option>
@@ -107,7 +127,7 @@ const AddTaskForm = ({onTaskAdded}) => {
 
             <div className={styles.inputGroup}>
                 <label htmlFor="priority">Priorité</label>
-                <select id="priority" value ={priority} onChange={(e) => setPriority(e.target.value)} >
+                <select id="priority" value ={priority} onChange={(e) => setPriority(e.target.value)} required >
                 <option value="" disabled >Choisir une priorité</option>
                 <option value="low">Basse (Low)</option>
                 <option value="medium">Moyenne (Medium)</option>

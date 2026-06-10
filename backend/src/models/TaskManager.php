@@ -80,7 +80,8 @@ class TaskManager {
     //  supprimer une tâche
     public function deleteTask(int $id) {
         $stmt = $this->pdo->prepare("DELETE FROM tasks WHERE id = ?");
-        $stmt->execute([$id]);
+        return $stmt->execute([$id]); // Retourne true si la suppression a fonctionné
+
         
     }
 

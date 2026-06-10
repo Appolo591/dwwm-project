@@ -12,20 +12,25 @@ export default function MyTasks() {
     
     useEffect(() => {
 
-        if(!id|| !token) 
-        return;
+        console.log("=== CHARGEMENT DE MY TASKS ===");
+        console.log("ID détecté dans l'URL :", id);
+
+        //  MODIFICATION ICI : On va chercher le token de secours dans le localStorage 
+        // si le Context React est en train de se synchroniser.
+        const activeToken = token || localStorage.getItem('token');
+
+        if(!id|| !activeToken) 
+            return;
 
         const getTasks = async () => {
             setLoading(true);
-            // console.log("Token envoyé :", token); // Vérification console
-            // console.log("ID utilisé :", id);      // Vérification console
 
         try {
             const response = await fetch(`${API_URL}/tasks/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}` 
+                    "Authorization": `Bearer ${activeToken}` 
                 }
             });
 
@@ -33,7 +38,8 @@ export default function MyTasks() {
             // console.log("Réponse du serveur :", result);
 
             if (response.ok && result.status === "success") {
-                setTasks(result.data);
+                const sortedTasks = result.data.sort((a, b) => b.id - a.id);
+                setTasks(sortedTasks);
             } else {
                 console.error("Le serveur a dit non :", result.message);
             }
@@ -49,10 +55,28 @@ export default function MyTasks() {
     if (loading) return <p>Chargement des taches...</p>;
 
     return (
-        <div>
-            <h1>MyTasks</h1>
-            <TaskList tasks={tasks} />
-            <Link to="/add"><button className="btn btn-secondary">Ajouter une tâche</button></Link>
+        <div className="container mt-4">
+            <h1>Mes Tâches</h1>
+            {/* <TaskList tasks={tasks} />
+            <Link to="/add"><button className="btn btn-secondary">Ajouter une tâche</button></Link> */}
+            {/* Si l'utilisateur n'a pas encore de tâches, on affiche un message propre */}
+            {tasks.length === 0 ? (
+                <div className="alert alert-info text-center py-4">
+                    <p className="mb-3">Vous n'avez pas encore de tâches enregistrées.</p>
+                    <Link to="/add">
+                        <button className="btn btn-primary">Créer ma première tâche</button>
+                    </Link>
+                </div>
+            ) : (
+                <>
+                    <TaskList tasks={tasks} />
+                    <div className="mt-3">
+                        <Link to="/add">
+                            <button className="btn btn-primary">Ajouter une tâche</button>
+                        </Link>
+                    </div>
+                </>
+            )}
         </div>
     )
 }
