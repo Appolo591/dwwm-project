@@ -4,7 +4,6 @@ const EditTask =()=> {
 // 5. Le rendu JSX
   return (
     <div>
-      <h1>EditTaskPage</h1>
       <EditTaskForm/>
     </div>
   );

@@ -82,7 +82,7 @@ const EditTaskForm = () => {
 
 
     return (
-        <form method="PUT" className={styles.editform} onSubmit={handleUpdate}>
+        <form className={styles.editform} onSubmit={handleUpdate}>
             <legend>Formulaire de mise à jour de la tâche </legend>
 
 
@@ -90,7 +90,7 @@ const EditTaskForm = () => {
                 <input type="text" value = {title} onChange={(e) => setTitle(e.target.value)}/>
 
                 <label htmlFor="description">Description</label>
-                <textarea type="textarea" value = {description}  onChange={(e) => setDescription(e.target.value)} />
+                <textarea name="description" id="description" value = {description}  onChange={(e) => setDescription(e.target.value)} />
 
                 <label htmlFor="priority">Priorité</label>
                 <select name="priority" id="priority" value = {priority} onChange={(e) => setPriority(e.target.value)}>

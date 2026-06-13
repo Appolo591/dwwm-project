@@ -40,7 +40,7 @@ class AuthController {
         // --- LA CRÉATION DU TOKEN ---
                 $payload = [
                     "iat" => time(),          // Heure de création
-                    "exp" => time() + 3600,   // Expire dans 1 heure
+                    "exp" => time() + (24 * 3600),   // Expire dans 24 heures
                     "id" => $user['id'],     // On cache l'ID de l'user dedans
                     "name" => $user['name'],  // Et son nom pour l'affichage React
                     "role" => $user['role']

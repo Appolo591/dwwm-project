@@ -11,7 +11,6 @@ const AddTask =()=> {
 
     return (
         <div>
-            <h1>AddTaskPage</h1>
             <AddTaskForm  onTaskAdded={handleRefreshlist}/>
         </div>  
     )

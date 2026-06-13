@@ -56,7 +56,7 @@ export default function MyTasks() {
 
     return (
         <div className="container mt-4">
-            <h1>Mes Tâches</h1>
+            {/* <h1>Mes Tâches</h1> */}
             {/* <TaskList tasks={tasks} />
             <Link to="/add"><button className="btn btn-secondary">Ajouter une tâche</button></Link> */}
             {/* Si l'utilisateur n'a pas encore de tâches, on affiche un message propre */}

@@ -1,58 +1,84 @@
-import { Link , useNavigate} from 'react-router-dom'
-import styles from './Navbar.module.css'
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import styles from './Navbar.module.css';
 import toast from 'react-hot-toast';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 
-
-const Navbar =()=> {
-
+const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation(); 
 
-
-  // 1. On récupère les infos et la fonction logout du contexte
-  // Plus besoin de useState ni de useEffect ici !
-  const { isLoggedIn, logout , user } = useContext(AuthContext);
+  // On récupère les infos et la fonction logout du contexte
+  const { isLoggedIn, logout, user } = useContext(AuthContext);
   
   const handleLogout = () => {
-    // 2. On appelle la fonction logout du contexte
-    // Elle va vider le localStorage ET mettre à jour l'état global d'un coup
     logout();
     navigate('/login');
     toast.success('Vous avez bien été déconnecté !');
   };
 
+  // Tableau des pages où l'on veut afficher le lien "Accueil" quand on est anonyme
+  const showHomeLink = ['/register', '/login', '/reset-password'].includes(location.pathname);
+
+  // 🔥 Fonction pour vérifier dynamiquement si un lien correspond à l'URL actuelle
+  // (Prend en compte le début de l'URL pour gérer les IDs dynamiques comme /tasks/38)
+  const isActivePath = (path) => {
+    return location.pathname.startsWith(path) ? styles.active : '';
+  };
 
   return (
-  <nav className={styles.navbar}>
-    {location.pathname == '/register' && <Link to="/" className={`${styles.active} ${styles.navLink}`} >Accueil</Link>}
-    {location.pathname == '/login' && <Link to="/" className={`${styles.active} ${styles.navLink}`} >Accueil</Link>}
-    {location.pathname == '/reset-password' && <Link to="/" className={`${styles.active} ${styles.navLink}`} >Accueil</Link>}
-    
-    {isLoggedIn && (
-                // --- CE QU'ON VOIT QUAND ON EST CONNECTÉ ---
-                <>
-                    {user?.role === 'admin' && (
-                        <Link to={`/all-tasks`} className={styles.navLink}>
-                            Toutes les Tâches
-                        </Link>
-                    )}
-                    <Link to={`/tasks/${user?.id}`} className={styles.navLink}>Mes Tâches</Link>
-                    <Link to={`/profil/${user?.id}`} className={styles.navLink}>Mon Profil</Link> 
-                    <p className ={styles.connected}>Bonjour,{user?.name} {user?.role === 'admin' && '(admin)'}</p>
-                    <button onClick={handleLogout} style={{ color: 'red' }}>
-                        Déconnexion
-                    </button>
-                </>
-            // ) : (
-            //     // --- CE QU'ON VOIT QUAND ON EST ANONYME ---
-            //     <>
-            //         <Link to="/login" className={styles.navLink}>Connexion</Link>
-            //         <Link to="/register" className={styles.navLink}>Inscription</Link>
-            //     </>
-            )}
-  </nav>
-  )
-}
+    <nav className={styles.navbar}>
+      <div className={styles.navContainer}>
+        
+        {/* LOGO OU NOM DE L'APPLICATION */}
+        <div className={styles.navBrand}>
+          <Link to="/">📝 MyTasks</Link>
+        </div>
 
-export default Navbar
+        {/* LIENS DE NAVIGATION */}
+        <div className={styles.navLinks}>
+          
+          {/* Si on est sur une page d'authentification, on affiche le bouton Accueil */}
+          {showHomeLink && !isLoggedIn && (
+            <Link to="/" className={`${styles.navLink} ${styles.active}`}>
+              Accueil
+            </Link>
+          )}
+          
+          {isLoggedIn ? (
+            // --- CE QU'ON VOIT QUAND ON EST CONNECTÉ ---
+            <>
+              {user?.role === 'admin' && (
+                <Link to="/all-tasks" className={`${styles.navLink} ${styles.adminLink} ${location.pathname === '/all-tasks' ? styles.active : ''} `}>
+                 Toutes les Tâches
+                </Link>
+              )}
+              <Link to={`/tasks/${user?.id}`} className={`${styles.navLink} ${isActivePath('/tasks')}`} >Mes Tâches</Link>
+              <Link to={`/profil/${user?.id}`} className={`${styles.navLink} ${isActivePath('/profil')}`}>Mon Profil</Link> 
+              
+              
+              <span className={styles.connectedUser}>
+                Bonjour, <strong>{user?.name}</strong> {user?.role === 'admin' && <small className={styles.adminBadge}>Admin</small>}
+              </span>
+              
+              <button onClick={handleLogout} className={styles.logoutBtn}>
+                Déconnexion
+              </button>
+            </>
+          ) : (
+            // --- CE QU'ON VOIT QUAND ON EST ANONYME (Hors formulaires) ---
+            !showHomeLink && (
+              <>
+                <Link to="/login" className={styles.navLink}>Connexion</Link>
+                <Link to="/register" className={`${styles.navLink} ${styles.registerBtn}`}>Inscription</Link>
+              </>
+            )
+          )}
+        </div>
+
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;

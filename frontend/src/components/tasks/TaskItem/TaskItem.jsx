@@ -15,12 +15,18 @@ function TaskItem({ task }) {
     return (
             <Link to={`/task/${task.id}`} className={styles.taskLink}>
             <div className={styles.taskItem}>
-                <p className={styles.taskCategory} style={{ backgroundColor: bgColor }}>{task.category_name} </p>
-                {task.priority && <span className={styles.taskPriority}> {task.priority}</span>}
-                <h3>{task.title}</h3> 
-                <p>{task.description}</p>
-                {task.created_at && <span> Ajouté le {formatDate(task.created_at)}</span>}
-                <span>user {task.user_id}</span>
+                <div className={styles.taskHeader}>
+                    <p className={styles.taskCategory} style={{ backgroundColor: bgColor }}>{task.category_name} </p>
+                    {task.priority && <span className={styles.taskPriority}> {task.priority}</span>}
+                </div>
+                <div>
+                    <h3>{task.title}</h3> 
+                    <p>{task.description}</p>
+                </div>
+                <div>
+                    {task.created_at && <span> {formatDate(task.created_at)}</span>}
+                    <span>user {task.user_id}</span>
+                </div>
             </div>
             </Link>
         

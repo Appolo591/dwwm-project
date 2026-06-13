@@ -7,6 +7,7 @@ const TaskList = ({tasks}) => {
   return (
     <>
       
+        <p>Total de tâches : {tasks.length}</p>
       <ul className= {styles.taskList} >
         {tasks.map(task => (
             <li key={task.id}>
@@ -14,7 +15,6 @@ const TaskList = ({tasks}) => {
             </li>
         ))}
       </ul>
-      <p>Total de tâches : {tasks.length}</p>
     </>
   );
 };

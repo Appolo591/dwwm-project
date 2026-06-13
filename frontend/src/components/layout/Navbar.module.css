@@ -1,47 +1,202 @@
-.navbar{
-    width: 100%;
-    height: 50px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+/* ==========================================================================
+   1. STRUCTURE DE LA BARRE DE NAVIGATION
+   ========================================================================== */
+.navbar {
+    background-color: #f9ebeb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    padding: 0.75rem 0;
     position: relative;
-    
+    top: 0;
+    z-index: 1000;
+    border-radius: 30px;
 }
 
-.navLink{
-    text-decoration: none;
-    color: #08060d;
-    font-weight: bold;
-    cursor: pointer;
-    list-style: none;
-    
-}
-
-.active{
-    color: #373333;
-}
-
-.navLinks{
-    text-decoration: none;
-    color: #08060d;
-    font-weight: bold;
-    top : 10px;
-    left: 20px;
+.navContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
     display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: 10px;
-    
+    justify-content: space-between;
+    align-items: center;
 }
 
+/* ==========================================================================
+   2. LOGO / MARQUE
+   ========================================================================== */
+.navBrand a {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #0d6efd; 
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    border-radius: 100px;
+}
 
-.navLink:hover{
-    color: #707070;
-    
-}   
+.navBrand a:hover {
+    transform: scale(1.02);
 
-.connected{
-    text-decoration: underline;
-    font-weight: bold;
-    color:#c76b1f
+}
+
+/* ==========================================================================
+   3. LIENS DE NAVIGATION (Soulignement uniquement sur la page active)
+   ========================================================================== */
+.navLinks {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.navLink {
+    color: #495057;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.6rem 0.1rem; /* Padding vertical pour descendre la barre, horizontal réduit au texte */
+    position: relative; /* Position de référence pour la barre */
+    transition: color 0.15s ease-in-out;
+}
+
+/* Changement de couleur basique au survol du texte, sans toucher au soulignement */
+.navLink:hover {
+    color: #0d6efd;
+}
+
+/* ==========================================================================
+   ÉTAT ACTIF (La barre s'affiche UNIQUEMENT ici)
+   ========================================================================== */
+.active {
+    color: #0d6efd !important;
+}
+
+/* On crée et affiche la barre uniquement quand la classe .active est appliquée */
+.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px; /* Épaisseur de ta barre */
+    background-color: #0d6efd; /* Bleu Primary */
+    border-radius: 2px;
+}
+
+/* Style et barre spécifique pour le lien Admin lorsqu'il est actif */
+.adminLink.active {
+    color: #0d6efd !important;
+}
+
+.adminLink.active::after {
+    background-color: #0d6efd; /* Barre verte pour l'admin */
+}
+
+/* ==========================================================================
+   ÉTAT ACTIF (Page courante)
+   ========================================================================== */
+.active {
+    color: #0d6efd !important;
+    background-color: transparent !important; /* On retire le fond bleu pour ne garder que la barre */
+}
+
+/* La barre est active et reste visible en permanence sur la page courante */
+.active::after {
+    transform: scaleX(1) !important;
+    background-color: #0d6efd;
+}
+
+/* Style spécifique pour le lien Admin actif */
+.adminLink.active {
+    color: #0d6efd !important;
+}
+.adminLink.active::after {
+    background-color: #0d6efd;
+}
+
+/* ==========================================================================
+   4. INTERFACES UTILISATEURS (Infos, Badges, Déconnexion)
+   ========================================================================== */
+.connectedUser {
+    font-size: 0.9rem;
+    color: #212529;
+    padding: 0 0.5rem;
+    border-left: 1px solid #dee2e6;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.adminBadge {
+    background-color: #dc3545; /* Rouge Danger */
+    color: #fff;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+/* Bouton Déconnexion */
+.logoutBtn {
+    background:#dee2e6;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.logoutBtn:hover {
+    background-color: #dc3545;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+}
+
+/* Bouton Inscription (Anonyme) */
+.registerBtn {
+    background-color: #0d6efd;
+    color: #fff !important;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.registerBtn:hover {
+    background-color: #0b5ed7;
+    box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);
+}
+
+/* ==========================================================================
+   5. 📱 RESPONSIVE DESIGN (Tablettes et Mobiles)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .navContainer {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .navLinks {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    .navLink, .logoutBtn, .connectedUser {
+        width: 100%;
+        justify-content: center;
+        padding: 0.6rem;
+    }
+
+    .connectedUser {
+        border-left: none;
+        border-top: 1px solid #dee2e6;
+        border-bottom: 1px solid #dee2e6;
+        padding: 0.6rem 0;
+    }
 }
