@@ -2,6 +2,10 @@
     // Temporaire pour débugger
     // var_dump($_GET['page']); die();
 
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Methods: GET,POST,DELETE,PUT,OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type, Authorization");

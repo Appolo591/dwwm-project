@@ -2,7 +2,7 @@ import styles from './AddTaskForm.module.css'
 import { useState ,useContext} from 'react'
 import { AuthContext } from '../../../context/AuthContext';
 import { API_URL } from '../../../config/api';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
 const AddTaskForm = ({onTaskAdded}) => {
@@ -13,7 +13,7 @@ const AddTaskForm = ({onTaskAdded}) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const { user ,token } = useContext(AuthContext);
     
      // 2. Gestionnaire de soumission du formulaire
@@ -85,7 +85,7 @@ const AddTaskForm = ({onTaskAdded}) => {
                     onTaskAdded(result.data);
                 }
                 toast.success('Tâche ajoutée !');
-                window.location.href = `/tasks/${currentUserId}`;
+                navigate(`/tasks/${currentUserId}`);
             } else {
                 setError(result.message || 'Une erreur est survenue côté serveur.');
                 toast.error('Une erreur est survenue.');

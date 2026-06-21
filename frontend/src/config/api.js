@@ -1,2 +1,2 @@
-export const API_URL = "http://localhost/dwwm-project/backend";
+export const API_URL = "https://mytasks.alwaysdata.net/backend";
 

@@ -5,7 +5,7 @@ use PDO;
 use PDOException;
 
 class Database {
-    private static $instance = null;
+    private static ?PDO $instance = null;
 
     public static function getConnection() {
         if (self::$instance === null) {
@@ -25,7 +25,7 @@ class Database {
                     ]
                 );
             } catch (PDOException $e) {
-                die(json_encode(["error" => "Erreur de connexion : " . $e->getMessage()]));
+                die(json_encode(["error" => "Erreur de connexion à la BDD de production : " . $e->getMessage()]));
             }
         }
         return self::$instance;
