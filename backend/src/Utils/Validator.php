@@ -6,7 +6,7 @@ namespace Paull\Backend\Utils;
 class Validator {
 
     // Pour l'INSCRIPTION : Très strict
-    public static function validateRegister($data) {
+    public static function validateRegister(mixed $data) {
         if (empty($data['email']) || empty($data['password']) || empty($data['name'])) {
             return "Tous les champs sont obligatoires.";
         }
@@ -24,7 +24,7 @@ class Validator {
     }
 
     // Pour la CONNEXION : Plus souple
-    public static function validateLogin($data) {
+    public static function validateLogin(mixed $data) {
         if (empty($data['name']) || empty($data['password'])) {
             return "nom et mot de passe requis.";
         }

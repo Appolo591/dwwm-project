@@ -42,8 +42,12 @@ export default function App() {
             <Route path="edit/:id" element={<EditTask/>} />
             <Route path="profil/:id" element={<Profil/>} />
             <Route path="edit-profil/:id" element={<EditProfil/>} />
-            <Route path="all-tasks" element={<AllTasks/>} />
             <Route path="tasks/:id" element={<MyTasks/>} />
+          </Route>
+
+          {/* --- ROUTES ADMIN --- */}
+          <Route element={<ProtectedRoute adminOnly={true} />}>
+            <Route path="all-tasks" element={<AllTasks/>} />
             <Route path="users" element={<h2> liste des users</h2>} />
           </Route>
 

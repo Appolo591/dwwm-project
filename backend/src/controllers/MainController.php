@@ -7,7 +7,7 @@ use Paull\Backend\Utils\Utilities;
 class MainController {
     public function index() {
 
-        // AuthController::checkAdmin();
+        AuthController::checkAdmin();
 
         // On instancie le manager
         $taskManager = new TaskManager();

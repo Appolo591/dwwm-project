@@ -125,19 +125,19 @@ class AuthController {
         }
     } 
     
-    // public static function checkAdmin() {
-    //     //check si l'user est connecté
-    //     $decoded = self::checkAuth();
+    public static function checkAdmin() {
+        //check si l'user est connecté
+        $decoded = self::checkAuth();
 
-    //     //check si le role dans token est admin
-    //     if(!isset($decoded->role) || $decoded->role !== 'admin') {
-    //         Utilities::sendJson(403, [
-    //             "status" => "error",
-    //             "message" => "Accès refusé. Droits admininstrateurs requis."]);
-    //     exit;
-    //     }
-    // return $decoded;
-    // }
+        //check si le role dans token est admin
+        if(!isset($decoded->role) || $decoded->role !== 'admin') {
+            Utilities::sendJson(403, [
+                "status" => "error",
+                "message" => "Accès refusé. Droits admininstrateurs requis."]);
+        exit;
+        }
+    return $decoded;
+    }
 
     
 }
