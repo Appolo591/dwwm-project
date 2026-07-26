@@ -53,6 +53,11 @@ const Navbar = () => {
                  Toutes les Tâches
                 </Link>
               )}
+              {user?.role === 'admin' && (
+                <Link to="/users" className={`${styles.navLink} ${styles.adminLink} ${location.pathname === '/users' ? styles.active : ''} `}>
+                  Tous les Utilisateurs
+                </Link>
+              )}
               <Link to={`/tasks/${user?.id}`} className={`${styles.navLink} ${isActivePath('/tasks')}`} >Mes Tâches</Link>
               <Link to={`/profil/${user?.id}`} className={`${styles.navLink} ${isActivePath('/profil')}`}>Mon Profil</Link> 
               

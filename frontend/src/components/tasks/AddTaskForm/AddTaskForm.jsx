@@ -14,19 +14,13 @@ const AddTaskForm = ({onTaskAdded}) => {
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
-    const { user ,token } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     
      // 2. Gestionnaire de soumission du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault(); // Empêche le rechargement de la page
         setError('');
         setIsSubmitting(true);
-
-        // // 👇 AJOUTE CES TROIS LOGS ICI 👇
-        // console.log("=== SÉCURITÉ ADD TASK ===");
-        // console.log("1. user depuis le Context :", user);
-        // console.log("2. user depuis le localStorage :", JSON.parse(localStorage.getItem('user')));
-        // console.log("3. token utilisé :", token);
     
         //validation côté Front
         if (!title.trim() || !description.trim()) {
@@ -41,32 +35,14 @@ const AddTaskForm = ({onTaskAdded}) => {
         const savedUser = JSON.parse(localStorage.getItem('user'));
         const currentUserId = user?.id || savedUser?.id;
 
-        // console.log("4. ID final retenu et envoyé :", currentUserId);
-        // console.log("=========================");
-
-        if (!currentUserId) {
-            setError("Erreur de session : Impossible de récupérer votre identifiant. Veuillez vous reconnecter.");
-            toast.error("Utilisateur non identifié.");
-            setIsSubmitting(false);
-            return;
-        }
-
-        // console.log("Données envoyées au PHP :", {
-        //     title: title,
-        //     description: description,
-        //     priority: priority,
-        //     category_id: category,
-        //     user_id: userId
-        // })
-
         try {
             // 3. Appel API vers ton Backend PHP (pense à ton API_URL config)
             const response = await fetch(`${API_URL}/add`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({  title: title, description: description, priority: priority, category_id: Number(category), user_id: Number(currentUserId) }), // On envoie les données en JSON
             });
 

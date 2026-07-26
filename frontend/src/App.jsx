@@ -12,6 +12,7 @@ import ResetPassword from './pages/Contact';
 import MyTasks from './pages/MyTasks';
 import AllTasks from './pages/AllTasks';
 import EditProfil from './pages/EditProfil';
+import UsersPage from './pages/UsersPage';
 import {Toaster} from 'react-hot-toast';
 import ButtonUsage from './components/utils/ButtonUsage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -48,7 +49,7 @@ export default function App() {
           {/* --- ROUTES ADMIN --- */}
           <Route element={<ProtectedRoute adminOnly={true} />}>
             <Route path="all-tasks" element={<AllTasks/>} />
-            <Route path="users" element={<h2> liste des users</h2>} />
+            <Route path="users" element={<UsersPage/>} />
           </Route>
 
           {/* --- AUTRES --- */}

@@ -8,7 +8,16 @@ const AllTasks =()=> {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${API_URL}/all-tasks`)
+        fetch(`${API_URL}/all-tasks`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            }
+        )
+
             .then(response => response.json())
             .then(result => {
                 if (result.status === "success") {

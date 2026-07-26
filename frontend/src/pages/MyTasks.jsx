@@ -17,10 +17,10 @@ export default function MyTasks() {
 
         //  MODIFICATION ICI : On va chercher le token de secours dans le localStorage 
         // si le Context React est en train de se synchroniser.
-        const activeToken = token || localStorage.getItem('token');
+        // const activeToken = token || localStorage.getItem('token');
 
-        if(!id|| !activeToken) 
-            return;
+        // if(!id|| !activeToken) 
+        //     return;
 
         const getTasks = async () => {
             setLoading(true);
@@ -30,8 +30,9 @@ export default function MyTasks() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${activeToken}` 
-                }
+                    // "Authorization": `Bearer ${activeToken}` 
+                },
+                credentials: 'include'
             });
 
             const result = await response.json();

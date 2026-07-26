@@ -1,12 +1,22 @@
-RewriteEngine On
+# RewriteEngine On
 
-RewriteBase /backend/
+# RewriteBase /backend/
 
-RewriteCond %{HTTP:Authorization} ^(.*)
-RewriteRule .* - [e:HTTP_AUTHORIZATION:%1]
+# RewriteCond %{HTTP:Authorization} ^(.*)
+# RewriteRule .* - [e:HTTP_AUTHORIZATION:%1]
 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]
+# RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /dwwm-project/backend/
+
+    # Redirection classique vers index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php?page=$1 [QSA,L]
+</IfModule>
 

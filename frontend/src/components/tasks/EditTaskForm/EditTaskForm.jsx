@@ -17,7 +17,7 @@ const EditTaskForm = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
 
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
 
        const updatedTask = {
            id: id,
@@ -32,8 +32,8 @@ const EditTaskForm = () => {
        try{
         const response = await fetch(`${API_URL}/edit/${id}`, {
             method: 'PUT',
-            headers: {'Content-Type': 'application/json', 
-                    'Authorization': `Bearer ${token}`},
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
             body: JSON.stringify(updatedTask)
         });
 
@@ -57,13 +57,12 @@ const EditTaskForm = () => {
     }
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
         fetch(`${API_URL}/task/${id}`, {
           method: "GET",
           headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}` 
-          }
+            "Content-Type": "application/json" },
+            credentials: 'include'
         })
           .then(response => response.json())
           .then(result => {

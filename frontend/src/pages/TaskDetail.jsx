@@ -10,7 +10,7 @@ const TaskDetail =() => {
     // 1. On récupère l'ID directement depuis l'URL (ex: /task/1)
     const { id } = useParams()
     const navigate = useNavigate();
-    const {user, token} = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
     const [task, setTask] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -20,9 +20,9 @@ const TaskDetail =() => {
         fetch(`${API_URL}/task/${id}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
         })
             .then(response => response.json())
             .then(result => {
@@ -39,7 +39,7 @@ const TaskDetail =() => {
                 console.error("Erreur de fetch:", error);
                 setLoading(false);
             });
-    }, [id, token]);
+    }, [id]);
 
     // Fonction de suppression  
     const handleDelete = async () => {
@@ -50,9 +50,9 @@ const TaskDetail =() => {
             const response = await fetch(`${API_URL}/delete/${id}`, {
                 method: 'DELETE', 
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
             });
             const result = await response.json();
 

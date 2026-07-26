@@ -19,23 +19,25 @@ const LoginForm = () => {
     const handleLogin = async(e) => {
         e.preventDefault()
 
+        const name = e.target.elements.name.value;
+        const password = e.target.elements.password.value;
+
         try{
             const response = await fetch(`${API_URL}/login`, {
-                method: 'POST',
+            method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: e.target.elements.name.value,
-                    password: e.target.elements.password.value
-                })
+                credentials: 'include',
+                body: JSON.stringify({name, password})
             });
+            
             const result = await response.json();
             console.log('données envoyées au serveur', result);
 
             if (response.ok) { 
                 toast.success('Connexion reussie !'); 
 
-                //Stockage du tocken , user , et isLoggedIn dans le context(navbar )
-                login(result.token, result.user);
+                //Stockage du  user , et isLoggedIn dans le context(navbar )
+                login(result.user);
 
                 setTimeout(() => {
                     navigate(`/tasks/${result.user.id}`);

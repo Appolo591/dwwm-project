@@ -2,20 +2,34 @@
     // Temporaire pour débugger
     // var_dump($_GET['page']); die();
 
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+    // 1. Définition des origines autorisées (local + prod)
+    $allowedOrigins = [
+        'http://localhost:5173',
+        'https://mytasks.alwaysdata.net' // Ajoute ici ton domaine de prod front si besoin
+    ];
 
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: GET,POST,DELETE,PUT,OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type, Authorization");
-    header("Content-Type: application/json");
+    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
-    
-    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    if (in_array($origin, $allowedOrigins)) {
+        header("Access-Control-Allow-Origin: " . $origin);
+    } else {
+        // Par défaut pour le dev local si pas dans la liste
+        header("Access-Control-Allow-Origin: http://localhost:5173");
+    }
+
+    header("Access-Control-Allow-Credentials: true");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
+    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
         http_response_code(200);
         exit();
     }
+
+    // Active l'affichage des erreurs PHP si le script plante
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 
     define("ROOT", str_replace("index.php", "", (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . $_SERVER["PHP_SELF"])) ;
 
@@ -126,14 +140,9 @@
             $authController->login();
             break;
 
-        // case 'edit-profil':
-        //     $id = $url[1];
-        //     if (isset($id) && is_numeric($id)) {
-        //         $usersController->updateUser($id); 
-        //     } else {
-        //         throw new Exception('ID de la tâche manquant');
-        //     }
-        //     break;
+        case 'logout':
+            $authController->logout();
+            break;
 
         default:
             throw new Exception('Page introuvable');

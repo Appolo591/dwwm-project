@@ -47,12 +47,25 @@ class AuthController {
                     
                 ];
 
-
                 $token = JWT::encode($payload, JWT_SECRET, 'HS256');
+
+        // ---  INJECTION DU TOKEN DANS UN COOKIE HTTPONLY ---
+                setcookie(
+                    "auth_token", // Le nom de ton choix pour le cookie
+                    $token,       // La valeur (ton token JWT)
+                    [
+                        "expires" => time() + (24 * 3600), // Aligné sur la validité du JWT
+                        "path" => "/",                     // Accessible sur toute l'application
+                        "domain" => "",           //  Domains autorisés
+                        "secure" => false,                  //  Uniquement transmis en HTTPS
+                        "httponly" => true,                //  Bloque complètement l'accès à JavaScript (XSS)
+                        "samesite" => "Lax"             //  Comportement par defaut
+                    ]
+                );
 
                 Utilities::sendJson(200,[
                     "status" => "success",
-                    "token" => $token,
+                    // "token" => $token,
                     "user" => [
                         "id" => $user['id'],
                         "name" => $user['name'],
@@ -66,7 +79,6 @@ class AuthController {
                     "message" => "Nom d'utilisateur ou mot de passe incorrect"
                 ]);
             }
-
         
     }
 
@@ -88,39 +100,41 @@ class AuthController {
 
     }
 
-    public function verifyToken(string $token) {    
-        try {
-            $decoded = JWT::decode($token, new Key(JWT_SECRET, 'HS256'));
-            echo "Token valide. Utilisateur ID : " . $decoded->user_id;
-            } catch (Exception $e) {
-                echo "Token invalide : " . $e->getMessage();
-            }
-    }
-
+    
     public static function checkAuth() {
+        
+        // 1. On récupère le header 'Authorization' envoyé par React
+    // $headers = getallheaders();
+    // $authHeader = $headers['Authorization'] 
+    //             ?? $headers['authorization'] 
+    //             ?? $_SERVER['HTTP_AUTHORIZATION'] 
+    //             ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
+    //             ?? null;
 
-    // 1. On récupère le header 'Authorization' envoyé par React
-    $headers = getallheaders();
-    $authHeader = $headers['Authorization'] 
-                ?? $headers['authorization'] 
-                ?? $_SERVER['HTTP_AUTHORIZATION'] 
-                ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
-                ?? null;
+    //     if (!$authHeader) {
+    //         Utilities::sendJson(401, ["message" => "Accès refusé. Token manquant."]);
+    //         exit;
+    //     }
 
-        if (!$authHeader) {
-            Utilities::sendJson(401, ["message" => "Accès refusé. Token manquant."]);
+    //     // Le header ressemble souvent à "Bearer le_token_ici", on récupère juste le token
+    //     $token = str_replace('Bearer ', '', $authHeader);
+
+    if (!isset($_COOKIE['auth_token'])) {
+            Utilities::sendJson(401, [
+                "status" => "error",
+                "message" => "Accès refusé. Session manquante ou déconnectée."
+            ]);
             exit;
         }
 
-        // Le header ressemble souvent à "Bearer le_token_ici", on récupère juste le token
-        $token = str_replace('Bearer ', '', $authHeader);
+        $token = $_COOKIE['auth_token'];
 
         try {
             // 2. On tente de décoder le token avec notre clé secrète
             $decoded = JWT::decode($token, new Key(JWT_SECRET, 'HS256'));
             return $decoded; // Si c'est bon, on renvoie les infos contenues dans le token
         } catch (\Exception $e) {
-            Utilities::sendJson(401, ["message" => "Token invalide ou expiré."]);
+            Utilities::sendJson(401, ["message" => "Session invalide ou expirée."]);
             exit;
         }
     } 
@@ -136,11 +150,37 @@ class AuthController {
                 "message" => "Accès refusé. Droits admininstrateurs requis."]);
         exit;
         }
-    return $decoded;
+        return $decoded;
     }
 
-    
+    public function logout() {
+    // Pour détruire un cookie, on le réécrit à vide avec une date d'expiration passée
+    setcookie("auth_token", "", [
+        "expires" => time() - 3600, // Expire il y a 1 heure -> destruction immédiate
+        "path" => "/",
+        "domain" => "localhost",
+        "secure" => false,
+        "httponly" => true,
+        "samesite" => "Lax"
+    ]);
+
+    Utilities::sendJson(200, [
+        "status" => "success",
+        "message" => "Déconnexion réussie côté serveur"
+    ]);
 }
-
-
-
+        
+    public function verifyToken(string $token) {    
+        try {
+            $decoded = JWT::decode($token, new Key(JWT_SECRET, 'HS256'));
+            echo "Token valide. Utilisateur ID : " . $decoded->user_id;
+            } catch (Exception $e) {
+                echo "Token invalide : " . $e->getMessage();
+            }
+    }
+        
+}
+        
+        
+        
+        

@@ -1,35 +1,41 @@
 import {useState } from "react";
 import { AuthContext } from "./AuthContext";
+import { API_URL } from "../config/api";
 
 export const AuthProvider = ({ children }) => {
 
-    const [token, setToken] = useState(localStorage.getItem('token'));
-    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
-    // const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
     const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('user');
-    // On vérifie si savedUser existe ET n'est pas la chaîne "undefined"
-    return (savedUser && savedUser !== "undefined") ? JSON.parse(savedUser) : null;
+        const savedUser = localStorage.getItem('user');
+        // On vérifie si savedUser existe ET n'est pas la chaîne "undefined"
+        return (savedUser && savedUser !== "undefined") ? JSON.parse(savedUser) : null;
     });
-
-    const login = (newToken, userData) => {
-        localStorage.setItem('token', newToken);
+    
+    const [isLoggedIn, setIsLoggedIn] = useState(!!user);
+    const login = (userData) => {
         localStorage.setItem('user', JSON.stringify(userData));
-
-        setToken(newToken);
-        setIsLoggedIn(true);
         setUser(userData);
+        setIsLoggedIn(true);
     };
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        setIsLoggedIn(false);
-        setUser(null);
+    const logout = async () => {
+        try {
+            // On demande au serveur PHP de supprimer le cookie HttpOnly
+            await fetch(`${API_URL}/logout`, {
+                method: "POST", 
+                credentials: "include" // Nécessaire pour envoyer le cookie à supprimer
+            });
+        } catch (error) {
+            console.error("Erreur lors de la déconnexion sur le serveur :", error);
+        } finally {
+            // Quoi qu'il arrive (même si le serveur est en panne), on nettoie le front-end
+            localStorage.removeItem('user');
+            setUser(null);
+            setIsLoggedIn(false);
+        }
     };
 
     return (
-        <AuthContext.Provider value={{isLoggedIn, user, token , login, logout}}>
+        <AuthContext.Provider value={{isLoggedIn, user, login, logout}}>
             {children}
         </AuthContext.Provider>
         );

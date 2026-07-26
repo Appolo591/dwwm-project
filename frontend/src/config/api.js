@@ -1,2 +1,2 @@
-export const API_URL = "https://mytasks.alwaysdata.net/backend";
+export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost/dwwm-project/backend';
 
