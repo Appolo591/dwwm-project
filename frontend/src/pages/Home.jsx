@@ -7,11 +7,6 @@ export default function Home() {
     return (
         <>
         <h1>Bienvenue sur My Tasks , l'application de gestion de vos tâches personnelles !!</h1>
-
-        {/* <div className={styles.buttons}>
-        <Link to="/login"><ButtonUsage  title="Se connecter" /></Link>
-        <Link to="/register"><ButtonUsage title="S'inscrire" /></Link>
-        </div> */}
         </>
     )
 }

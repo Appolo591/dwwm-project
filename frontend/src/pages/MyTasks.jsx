@@ -11,27 +11,13 @@ export default function MyTasks() {
     const { id } = useParams();
     
     useEffect(() => {
-
-        console.log("=== CHARGEMENT DE MY TASKS ===");
-        console.log("ID détecté dans l'URL :", id);
-
-        //  MODIFICATION ICI : On va chercher le token de secours dans le localStorage 
-        // si le Context React est en train de se synchroniser.
-        // const activeToken = token || localStorage.getItem('token');
-
-        // if(!id|| !activeToken) 
-        //     return;
-
         const getTasks = async () => {
             setLoading(true);
 
         try {
             const response = await fetch(`${API_URL}/tasks/${id}`, {
                 method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    // "Authorization": `Bearer ${activeToken}` 
-                },
+                headers: {"Content-Type": "application/json"},
                 credentials: 'include'
             });
 
@@ -57,10 +43,6 @@ export default function MyTasks() {
 
     return (
         <div className="container mt-4">
-            {/* <h1>Mes Tâches</h1> */}
-            {/* <TaskList tasks={tasks} />
-            <Link to="/add"><button className="btn btn-secondary">Ajouter une tâche</button></Link> */}
-            {/* Si l'utilisateur n'a pas encore de tâches, on affiche un message propre */}
             {tasks.length === 0 ? (
                 <div className="alert alert-info text-center py-4">
                     <p className="mb-3">Vous n'avez pas encore de tâches enregistrées.</p>

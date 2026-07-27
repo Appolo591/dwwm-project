@@ -4,7 +4,8 @@
 
     // 1. Définition des origines autorisées (local + prod)
     $allowedOrigins = [
-        'http://localhost:5173',
+        'http://localhost:5173',  // Mode dev (build local)
+        'http://localhost:4173', // Mode preview (build local)
         'https://mytasks.alwaysdata.net' // Ajoute ici ton domaine de prod front si besoin
     ];
 

@@ -11,11 +11,8 @@ const Profil = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const {logout} = useContext(AuthContext);
-    const { token } = useContext(AuthContext);
     const [user, setUser] = useState(null); 
     const [loading, setLoading] = useState(true); 
-    
-
 
     const handleUpdate = () => {
         navigate(`/edit-profil/${id}`);
@@ -24,14 +21,13 @@ const Profil = () => {
     const handleDelete = async () => {    
         if (!window.confirm("Etes-vous sur de vouloir supprimer votre compte ?")) return;
 
-        // const token = localStorage.getItem("token");
         try {
             const response = await fetch(`${API_URL}/profil/${id}`, {
                 method: "DELETE",
                 headers: { 
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                 }
+                    "Content-Type": "application/json"   
+                 },
+                 credentials: 'include'
             });
             const result = await response.json();
             if (result.status === "success") {
@@ -57,9 +53,9 @@ const Profil = () => {
                 const response = await fetch(`${API_URL}/profil/${id}`, {
                     method: "GET",
                     headers: { 
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
+                        "Content-Type": "application/json"
                      }
+                     ,credentials: 'include'
                     
                 });
 
@@ -94,7 +90,7 @@ const Profil = () => {
         return () => {
             isMounted = false;
         }
-    }, [id, token, navigate, logout]);
+    }, [id, user, navigate, logout]);
 
     if (loading) return <p>Chargement du profil...</p>;
     if (!user) return <p>Aucun utilisateur trouvé.</p>;

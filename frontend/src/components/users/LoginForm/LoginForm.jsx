@@ -31,7 +31,7 @@ const LoginForm = () => {
             });
             
             const result = await response.json();
-            console.log('données envoyées au serveur', result);
+            // console.log('données envoyées au serveur', result);
 
             if (response.ok) { 
                 toast.success('Connexion reussie !'); 
