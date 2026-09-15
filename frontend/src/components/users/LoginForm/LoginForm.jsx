@@ -31,9 +31,8 @@ const LoginForm = () => {
             });
             
             const result = await response.json();
-            // console.log('données envoyées au serveur', result);
 
-            if (response.ok) { 
+            if (response.ok && result.user && result.user.id) {
                 toast.success('Connexion reussie !'); 
 
                 //Stockage du  user , et isLoggedIn dans le context(navbar )
@@ -42,7 +41,7 @@ const LoginForm = () => {
                 setTimeout(() => {
                     navigate(`/tasks/${result.user.id}`);
                 }, 1000);
-            }else{
+            } else {
                 toast.error(result.message || 'Une erreur est survenue lors de la connexion.');
             }
         }catch(error){

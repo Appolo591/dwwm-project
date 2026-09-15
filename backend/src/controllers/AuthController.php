@@ -57,7 +57,7 @@ class AuthController {
                         "expires" => time() + (24 * 3600), // Aligné sur la validité du JWT
                         "path" => "/",                     // Accessible sur toute l'application
                         "domain" => "",           //  Domains autorisés
-                        "secure" => false,                  //  Uniquement transmis en HTTPS
+                        "secure" => true,                  //  Uniquement transmis en HTTPS
                         "httponly" => true,                //  Bloque complètement l'accès à JavaScript (XSS)
                         "samesite" => "Lax"             //  Comportement par defaut
                     ]

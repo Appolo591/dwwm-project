@@ -83,6 +83,18 @@
 
             $token = JWT::encode($payload, JWT_SECRET, 'HS256');
 
+            setcookie(
+                "auth_token",
+                $token,
+                [
+                    "expires" => time() + 3600,
+                    "path" => "/",
+                    "secure" => true,
+                    "httponly" => true,
+                    "samesite" => "Lax"
+                ]
+            );
+
             // 1. On nettoie les données pour la réponse (on retire le password)
             unset($data['password']); 
 

@@ -2,6 +2,10 @@
     // Temporaire pour débugger
     // var_dump($_GET['page']); die();
 
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
     // 1. Définition des origines autorisées (local + prod)
     $allowedOrigins = [
         'http://localhost:5173',  // Mode dev (build local)
@@ -52,12 +56,19 @@
     $authController = new AuthController();
 
 
-	if (empty($_GET['page'])) {
-        $url[0] = 'accueil';
-		
-	} else {
-		$url = explode('/', filter_var($_GET['page'],FILTER_SANITIZE_URL));
-	}
+	// Récupère l'URI (ex: "/backend/login" ou "/backend/all-tasks")
+    $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+    // Nettoie les préfixes "/backend/" ou "/backend" s'ils existent
+    $cleanedUri = preg_replace('#^/backend/?#', '',$requestUri);
+
+    // Découpe le reste de l'URL en tableau
+    $url = array_values(array_filter(explode('/', trim($cleanedUri, '/'))));
+
+// Si l'URL est vide, route par défaut
+if (empty($url) || empty($url[0])) {
+    $url[0] = 'accueil';
+}
 
 	switch ($url[0]) {
         // case 'accueil':

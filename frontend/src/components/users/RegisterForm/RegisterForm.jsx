@@ -50,6 +50,7 @@ const RegisterForm = () => {
             const response = await fetch(`${API_URL}/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify(formData)
             });
             const result = await response.json();
@@ -60,7 +61,7 @@ const RegisterForm = () => {
                 console.log("INSCRIPTION REUSSIE, REPO DU PHP :", result);
 
                 const userWithCleanId = {...result.data, id: Number(result.data.id)};
-                login(result.token, userWithCleanId);
+                login(userWithCleanId);
                 
                 setTimeout(() => {
                     navigate(`/profil/${userWithCleanId.id}`);
