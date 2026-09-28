@@ -161,7 +161,7 @@ class AuthController {
         "domain" => "localhost",
         "secure" => false,
         "httponly" => true,
-        "samesite" => "Lax"
+        "samesite" => "None"
     ]);
 
     Utilities::sendJson(200, [

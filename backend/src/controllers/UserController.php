@@ -76,7 +76,7 @@
         $payload = [
             "iat" => time(),          // Heure de création
             "exp" => time() + 3600,   // Expire dans 1 heure
-            "uid" => $userId,     // On cache l'ID de l'user dedans
+            "id" => $userId,     // On cache l'ID de l'user dedans
             "name" => $data['name'] ,  // Et son nom pour l'affichage React
             "email" => $data['email']
         ];

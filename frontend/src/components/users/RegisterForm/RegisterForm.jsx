@@ -64,7 +64,7 @@ const RegisterForm = () => {
                 login(userWithCleanId);
                 
                 setTimeout(() => {
-                    navigate(`/profil/${userWithCleanId.id}`);
+                    navigate(`/tasks/${userWithCleanId.id}`);
                 }, 1500);
             }else{
                 toast.error(result.message || 'Une erreur est survenue lors de l\'inscription.');
