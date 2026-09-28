@@ -91,7 +91,7 @@
                     "path" => "/",
                     "secure" => true,
                     "httponly" => true,
-                    "samesite" => "Lax"
+                    "samesite" => "None"  // Permet l'envoi du cookie sur les requêtes POST/PUT/DELETE cross-site
                 ]
             );
 

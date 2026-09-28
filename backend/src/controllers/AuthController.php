@@ -59,7 +59,7 @@ class AuthController {
                         "domain" => "",           //  Domains autorisés
                         "secure" => true,                  //  Uniquement transmis en HTTPS
                         "httponly" => true,                //  Bloque complètement l'accès à JavaScript (XSS)
-                        "samesite" => "Lax"             //  Comportement par defaut
+                        "samesite" => "None"             
                     ]
                 );
 
